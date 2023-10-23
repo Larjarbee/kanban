@@ -1,5 +1,4 @@
 'use client';
-
 import Image from 'next/image';
 import React from 'react';
 import logo from '../../../public/svgs/Group 15.svg';
@@ -12,11 +11,18 @@ import box2 from '../../../public/svgs/fluent_board-split-24-regular (3).svg';
 import { Switch, Typography, styled } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import useThemeToggle from '@/hooks/useThemeToggle';
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const { mode, setMode } = useThemeToggle();
+
   return (
-    <aside className='bg-White border-r-2 flex h-full flex-col justify-between'>
+    <aside
+      className={`${
+        mode === 'light' ? 'bg-White' : 'bg-DarkGrey'
+      } border-r-2 flex h-full flex-col justify-between`}
+    >
       <div className='space-y-8'>
         <div className='flex gap-3 items-center justify-center py-5'>
           <Image src={logo} width={24} height={25} alt='logo' />
@@ -71,6 +77,7 @@ export default function Sidebar() {
           <AntSwitch
             defaultChecked
             inputProps={{ 'aria-label': 'ant design' }}
+            onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
           />
           <Image src={light} width={16} height={16} alt='logo' />
         </div>
