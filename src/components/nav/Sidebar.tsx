@@ -7,7 +7,9 @@ import eye from '../../../public/svgs/eye-slash.1.svg';
 import light from '../../../public/svgs/Combined Shape.svg';
 import dark from '../../../public/svgs/Combined Shape (1).svg';
 import box from '../../../public/svgs/fluent_board-split-24-regular.svg';
-import { Button, Switch, Typography, styled } from '@mui/material';
+import box1 from '../../../public/svgs/fluent_board-split-24-regular (2).svg';
+import box2 from '../../../public/svgs/fluent_board-split-24-regular (3).svg';
+import { Switch, Typography, styled } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -40,7 +42,12 @@ export default function Sidebar() {
                 href={link.path}
               >
                 <div>
-                  <Image src={box} width={16} height={16} alt='logo' />
+                  <Image
+                    src={pathname == link.path ? box1 : box}
+                    width={16}
+                    height={16}
+                    alt='logo'
+                  />
                 </div>
 
                 <Typography variant='body1'>{link.name}</Typography>
@@ -48,7 +55,7 @@ export default function Sidebar() {
             ))}
             <div className='flex items-center pl-[27px] justify-center gap-3 py-3 text-Purple hover:cursor-pointer'>
               <div>
-                <Image src={box} width={16} height={16} alt='logo' />
+                <Image src={box2} width={16} height={16} alt='logo' />
               </div>
               <Link href='#'>
                 <Typography variant='body1'>+ Create New Board</Typography>
@@ -60,12 +67,12 @@ export default function Sidebar() {
 
       <div className='mt-52 mb-20 space-y-5'>
         <div className='p-3 mx-5 rounded-lg bg-LightGrey flex gap-5 justify-center items-center'>
-          <Image src={light} width={16} height={16} alt='logo' />
+          <Image src={dark} width={16} height={16} alt='logo' />
           <AntSwitch
             defaultChecked
             inputProps={{ 'aria-label': 'ant design' }}
           />
-          <Image src={dark} width={16} height={16} alt='logo' />
+          <Image src={light} width={16} height={16} alt='logo' />
         </div>
 
         <div className='flex items-center pl-3 gap-3 text-MediumGrey hover:cursor-pointer'>

@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import Sidebar from '@/components/nav/Sidebar';
 import Navbar from '@/components/nav/Navbar';
+import { Box } from '@mui/material';
 
 const jakarta = Plus_Jakarta_Sans({
   weight: ['200', '300', '400', '500', '600', '700', '800'],
@@ -23,17 +24,17 @@ export default function RootLayout({
     <html lang='en'>
       <body className={jakarta.className}>
         <ThemeConfig>
-          <div className='bg-LighterGrey'>
-            <div className='flex'>
-              <div className='h-full w-[20%]'>
+          <Box className='bg-LighterGrey'>
+            <Box className='flex'>
+              <Box className='h-full w-[20%]'>
                 <Sidebar />
-              </div>
-              <div className='w-[80%]'>
+              </Box>
+              <Box className='w-[80%]'>
                 <Navbar />
                 {children}
-              </div>
-            </div>
-          </div>
+              </Box>
+            </Box>
+          </Box>
         </ThemeConfig>
       </body>
     </html>
