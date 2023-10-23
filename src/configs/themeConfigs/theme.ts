@@ -9,9 +9,24 @@ const jakarta = Plus_Jakarta_Sans({
 const theme = createTheme({
   palette: {
     mode: 'light',
+
+    primary: {
+      main: '#635FC7',
+      light: '#A8A4FF',
+    },
+
+    // secondary: {
+    //   main: '#625fc747',
+    // },
   },
   typography: {
     fontFamily: jakarta.style.fontFamily,
+    body1: {
+      fontWeight: 600,
+    },
+    h6: {
+      fontWeight: 600,
+    },
   },
   components: {
     MuiAlert: {

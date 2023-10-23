@@ -4,6 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import NextAppDirEmotionCacheProvider from './EmotionCache';
 import theme from './theme';
+import 'tailwindcss/tailwind.css';
 
 export default function ThemeConfig({
   children,
