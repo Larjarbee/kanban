@@ -6,6 +6,7 @@ import Navbar from '@/components/nav/Navbar';
 import { Box } from '@mui/material';
 import { ThemeProvider } from '@/hooks/ThemeContext';
 import ContainerWrapper from '@/common/ContainerWrapper';
+import './globals.css';
 
 const jakarta = Plus_Jakarta_Sans({
   weight: ['200', '300', '400', '500', '600', '700', '800'],
@@ -29,10 +30,10 @@ export default function RootLayout({
           <ThemeProvider>
             <ContainerWrapper>
               <Box className='flex'>
-                <Box className='h-full w-[20%]'>
+                <Box className='fixed w-[20%]'>
                   <Sidebar />
                 </Box>
-                <Box className='w-[80%]'>
+                <Box className='w-[80%] ml-[20%] overflow-auto'>
                   <Navbar />
                   {children}
                 </Box>

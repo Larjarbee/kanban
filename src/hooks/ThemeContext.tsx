@@ -13,7 +13,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <ThemeContext.Provider value={{ mode, toggle }}>
-      <div className={`theme ${mode}`}>{children}</div>
+      <div className='theme'>{children}</div>
     </ThemeContext.Provider>
   );
 };

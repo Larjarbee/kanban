@@ -8,5 +8,9 @@
 
 body {
   margin: 0px;
-  background-color: red;
+}
+
+.theme {
+  transition: 1s all ease;
+  /* color: #828fa341; */
 }

@@ -21,7 +21,7 @@ export default function Sidebar() {
     <aside
       className={`${
         mode === 'light' ? 'bg-White' : 'bg-DarkGrey border-Grey'
-      } border-r-2 flex h-full flex-col justify-between`}
+      } border-r-2 flex h-screen flex-col justify-between`}
     >
       <div className='space-y-8'>
         <div className='flex gap-3 items-center justify-center py-5'>
@@ -77,7 +77,7 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <div className='mt-52 mb-20 space-y-5'>
+      <div className='py-10 space-y-5'>
         <div
           className={`p-3 mx-5 rounded-lg ${
             mode === 'light' ? 'bg-LightGrey' : 'bg-VeryDarkGrey'

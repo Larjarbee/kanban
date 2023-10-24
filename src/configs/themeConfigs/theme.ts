@@ -49,6 +49,9 @@ export const getThemeConfig = (mode: any) => ({
     body1: {
       fontWeight: 600,
     },
+    body2: {
+      fontWeight: 600,
+    },
     h6: {
       fontWeight: 600,
     },
