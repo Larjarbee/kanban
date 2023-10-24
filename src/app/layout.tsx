@@ -4,6 +4,7 @@ import { Plus_Jakarta_Sans } from 'next/font/google';
 import Sidebar from '@/components/nav/Sidebar';
 import Navbar from '@/components/nav/Navbar';
 import { Box } from '@mui/material';
+import { ThemeProvider } from '@/hooks/ThemeContext';
 import ContainerWrapper from '@/common/ContainerWrapper';
 
 const jakarta = Plus_Jakarta_Sans({
@@ -25,17 +26,19 @@ export default function RootLayout({
     <html lang='en'>
       <body className={jakarta.className}>
         <ThemeConfig>
-          <ContainerWrapper>
-            <Box className='flex'>
-              <Box className='h-full w-[20%]'>
-                <Sidebar />
+          <ThemeProvider>
+            <ContainerWrapper>
+              <Box className='flex'>
+                <Box className='h-full w-[20%]'>
+                  <Sidebar />
+                </Box>
+                <Box className='w-[80%]'>
+                  <Navbar />
+                  {children}
+                </Box>
               </Box>
-              <Box className='w-[80%]'>
-                <Navbar />
-                {children}
-              </Box>
-            </Box>
-          </ContainerWrapper>
+            </ContainerWrapper>
+          </ThemeProvider>
         </ThemeConfig>
       </body>
     </html>

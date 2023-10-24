@@ -1,18 +1,19 @@
 'use client';
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import NextAppDirEmotionCacheProvider from './EmotionCache';
 import 'tailwindcss/tailwind.css';
 import { getThemeConfig } from './theme';
-import { useThemeToggle } from '@/hooks/useThemeToggle';
+import { ThemeContext } from '@/hooks/ThemeContext';
 
 export default function ThemeConfig({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { mode } = useThemeToggle();
+  // const { mode } = useThemeToggle();
+  const { mode } = useContext(ThemeContext);
 
   const theme = createTheme(getThemeConfig(mode));
   return (

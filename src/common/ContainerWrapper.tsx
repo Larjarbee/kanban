@@ -1,14 +1,14 @@
 'use client';
-import { useThemeToggle } from '@/hooks/useThemeToggle';
-import React from 'react';
+
+import React, { useContext } from 'react';
+import { ThemeContext } from '@/hooks/ThemeContext';
 
 export default function ContainerWrapper({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { mode } = useThemeToggle();
-
+  const { mode } = useContext(ThemeContext);
   return (
     <div
       className={`${mode === 'light' ? 'bg-LighterGrey' : 'bg-VeryDarkGrey'}`}

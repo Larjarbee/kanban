@@ -1,19 +1,23 @@
 'use client';
-import { Box, IconButton, Typography, useTheme } from '@mui/material';
-import React from 'react';
+import { IconButton, Typography } from '@mui/material';
+import React, { useContext } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useThemeToggle } from '@/hooks/useThemeToggle';
+import { ThemeContext } from '@/hooks/ThemeContext';
 
 export default function Navbar() {
-  const theme = useTheme();
-  console.log(theme.palette.mode);
+  const { mode } = useContext(ThemeContext);
+
   return (
     <nav
       className={`${
-        theme.palette.mode === 'light' ? 'bg-White' : 'bg-DarkGrey'
+        mode === 'light' ? 'bg-White' : 'bg-DarkGrey border-Grey'
       } p-5 flex justify-between border-b-2 items-center`}
     >
-      <Typography variant='h6'>Platform Launch</Typography>
+      <div
+        className={`${mode === 'dark' ? 'text-White' : 'text-VeryDarkGrey'} `}
+      >
+        <Typography variant='h6'>Platform Launch</Typography>
+      </div>
       <div className='flex items-center gap-3'>
         <button
           disabled={true}
@@ -22,7 +26,11 @@ export default function Navbar() {
           + Add New Task
         </button>
         <IconButton>
-          <MoreVertIcon />
+          {mode === 'light' ? (
+            <MoreVertIcon />
+          ) : (
+            <MoreVertIcon sx={{ color: 'white' }} />
+          )}
         </IconButton>
       </div>
     </nav>
