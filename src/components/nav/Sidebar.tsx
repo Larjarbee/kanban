@@ -11,11 +11,14 @@ import box2 from '../../../public/svgs/fluent_board-split-24-regular (3).svg';
 import { Switch, Typography, styled } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import useThemeToggle from '@/hooks/useThemeToggle';
+import { useThemeToggle } from '@/hooks/useThemeToggle';
 
 export default function Sidebar() {
   const pathname = usePathname();
   const { mode, setMode } = useThemeToggle();
+
+  const toggleColorMode = () =>
+    setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
 
   return (
     <aside
@@ -77,7 +80,7 @@ export default function Sidebar() {
           <AntSwitch
             defaultChecked
             inputProps={{ 'aria-label': 'ant design' }}
-            onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
+            onClick={toggleColorMode}
           />
           <Image src={light} width={16} height={16} alt='logo' />
         </div>

@@ -1,5 +1,5 @@
 'use client';
-import useThemeToggle from '@/hooks/useThemeToggle';
+import { useThemeToggle } from '@/hooks/useThemeToggle';
 import React from 'react';
 
 export default function ContainerWrapper({

@@ -1,15 +1,16 @@
 'use client';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import useThemeToggle from '@/hooks/useThemeToggle';
+import { useThemeToggle } from '@/hooks/useThemeToggle';
 
 export default function Navbar() {
-  const { mode } = useThemeToggle();
+  const theme = useTheme();
+  console.log(theme.palette.mode);
   return (
     <nav
       className={`${
-        mode === 'light' ? 'bg-White' : 'bg-DarkGrey'
+        theme.palette.mode === 'light' ? 'bg-White' : 'bg-DarkGrey'
       } p-5 flex justify-between border-b-2 items-center`}
     >
       <Typography variant='h6'>Platform Launch</Typography>

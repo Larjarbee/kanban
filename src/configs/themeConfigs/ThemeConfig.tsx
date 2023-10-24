@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import NextAppDirEmotionCacheProvider from './EmotionCache';
 import 'tailwindcss/tailwind.css';
 import { getThemeConfig } from './theme';
-import useThemeToggle from '@/hooks/useThemeToggle';
+import { useThemeToggle } from '@/hooks/useThemeToggle';
 
 export default function ThemeConfig({
   children,

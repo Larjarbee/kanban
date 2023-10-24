@@ -1,7 +1,7 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 
-export default function useThemeToggle() {
-  const [mode, setMode] = React.useState('light');
+export function useThemeToggle() {
+  const [mode, setMode] = useState('light');
   return { mode, setMode };
 }
