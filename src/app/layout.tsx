@@ -29,15 +29,13 @@ export default function RootLayout({
         <ThemeConfig>
           <ThemeProvider>
             <ContainerWrapper>
-              <div className='flex'>
-                <div>
-                  <Sidebar />
-                </div>
-                <HomeWrapper>
-                  <Navbar />
-                  {children}
-                </HomeWrapper>
+              <div>
+                <Sidebar />
               </div>
+              <HomeWrapper>
+                <Navbar />
+                {children}
+              </HomeWrapper>
             </ContainerWrapper>
           </ThemeProvider>
         </ThemeConfig>

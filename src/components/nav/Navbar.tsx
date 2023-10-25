@@ -10,7 +10,7 @@ export default function Navbar() {
   const { mode, toggleNav } = useContext(ThemeContext);
 
   return (
-    <nav className='flex'>
+    <nav className='flex w-full justify-between'>
       {toggleNav === false ? (
         <div
           className={`flex w-[20%] gap-3 px-10 items-center justify-center border-b-2 border-r-2 ${

@@ -54,7 +54,7 @@ export default function ColumnList() {
       <div
         className={`${
           mode === 'light' ? 'bg-LightGrey' : 'bg-VeryLightGrey'
-        } text-MediumGrey p-5 flex items-center justify-center h-screen w-1/5 rounded-lg`}
+        } text-MediumGrey px-10 flex items-center justify-center h-screen rounded-lg`}
       >
         <Typography variant='body1'>+ New Column</Typography>
       </div>
