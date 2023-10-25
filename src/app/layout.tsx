@@ -3,7 +3,6 @@ import * as React from 'react';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import Sidebar from '@/components/nav/Sidebar';
 import Navbar from '@/components/nav/Navbar';
-import { Box } from '@mui/material';
 import { ThemeProvider } from '@/hooks/ThemeContext';
 import ContainerWrapper from '@/common/ContainerWrapper';
 import './globals.css';
@@ -30,15 +29,15 @@ export default function RootLayout({
         <ThemeConfig>
           <ThemeProvider>
             <ContainerWrapper>
-              <Box className='flex overflow-auto'>
-                <Box>
+              <div className='flex'>
+                <div>
                   <Sidebar />
-                </Box>
+                </div>
                 <HomeWrapper>
                   <Navbar />
                   {children}
                 </HomeWrapper>
-              </Box>
+              </div>
             </ContainerWrapper>
           </ThemeProvider>
         </ThemeConfig>

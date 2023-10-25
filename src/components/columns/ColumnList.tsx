@@ -7,10 +7,10 @@ export default function ColumnList() {
   const { mode } = useContext(ThemeContext);
 
   return (
-    <div className='overflow-auto flex gap-5'>
+    <div className='flex gap-5'>
       <div className='flex gap-5'>
         {DUMMY_COL.map((column, index) => (
-          <div key={index} className='space-y-5'>
+          <div key={index} className='space-y-5 w-[40%]'>
             <div className='flex gap-3 items-center'>
               <div
                 style={{ backgroundColor: column.color }}
@@ -50,6 +50,7 @@ export default function ColumnList() {
           </div>
         ))}
       </div>
+
       <div
         className={`${
           mode === 'light' ? 'bg-LightGrey' : 'bg-VeryLightGrey'
@@ -142,22 +143,12 @@ export const DUMMY_COL = [
           },
         ],
       },
-    ],
-  },
-  {
-    status: 'Doing',
-    color: '#8471F2',
-    todo: [
       {
-        title: 'Design settings and search pages',
+        title: 'Add account management endpoints',
         desc: 'We know what we are planning to build for version one. Now we need to finalise the first pricing model we will use. Keep iterating the subtasks until we have a coherent proposition.',
         substasks: [
           {
             task: 'Research competitor pricing and business models',
-            completed: true,
-          },
-          {
-            task: 'Outline a business model that works for our solution',
             completed: true,
           },
         ],
@@ -171,6 +162,44 @@ export const DUMMY_COL = [
             completed: true,
           },
         ],
+      },
+    ],
+  },
+  {
+    status: 'Done',
+    color: '#67E2AE',
+    todo: [
+      {
+        title: 'Management settings and search pages',
+        desc: 'We know what we are planning to build for version one. Now we need to finalise the first pricing model we will use. Keep iterating the subtasks until we have a coherent proposition.',
+        substasks: [
+          'Research competitor pricing and business models',
+          'Outline a business model that works for our solution',
+        ],
+      },
+      {
+        title: 'Add account management endpoints',
+        desc: 'We know what we are planning to build for version one. Now we need to finalise the first pricing model we will use. Keep iterating the subtasks until we have a coherent proposition.',
+        substasks: ['Research competitor pricing and business models'],
+      },
+    ],
+  },
+  {
+    status: 'Done',
+    color: '#67E2AE',
+    todo: [
+      {
+        title: 'Management settings and search pages',
+        desc: 'We know what we are planning to build for version one. Now we need to finalise the first pricing model we will use. Keep iterating the subtasks until we have a coherent proposition.',
+        substasks: [
+          'Research competitor pricing and business models',
+          'Outline a business model that works for our solution',
+        ],
+      },
+      {
+        title: 'Add account management endpoints',
+        desc: 'We know what we are planning to build for version one. Now we need to finalise the first pricing model we will use. Keep iterating the subtasks until we have a coherent proposition.',
+        substasks: ['Research competitor pricing and business models'],
       },
     ],
   },

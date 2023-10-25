@@ -52,7 +52,7 @@ export default function Sidebar() {
                     className={`link ${
                       pathname === link.path
                         ? 'flex items-center justify-center py-3 gap-3 text-White rounded-r-full bg-Purple'
-                        : 'flex items-center pl-14 gap-3 py-3 hover:bg-PurpleLight hover:text-White hover:rounded-r-full hover:transition-all'
+                        : 'flex items-center pl-14 gap-3 py-3 hover:bg-PurpleLighter hover:text-Purple hover:rounded-r-full hover:transition-all'
                     }`}
                     href={link.path}
                   >
@@ -95,22 +95,24 @@ export default function Sidebar() {
               <Image src={light} width={16} height={16} alt='logo' />
             </div>
 
-            <button
-              onClick={handleToggle}
-              className='flex items-center pl-3 gap-3 text-MediumGrey hover:cursor-pointer'
-            >
-              <div>
-                <Image src={eye} width={16} height={16} alt='logo' />
-              </div>
-              <Typography variant='body1'>Hide Sidebar</Typography>
-            </button>
+            <div className='w-[80%]'>
+              <button
+                onClick={handleToggle}
+                className='flex items-center w-full pl-3 rounded-r-full py-3 gap-3 text-MediumGrey hover:bg-PurpleLighter hover:text-Purple'
+              >
+                <div>
+                  <Image src={eye} width={16} height={16} alt='logo' />
+                </div>
+                <Typography variant='body1'>Hide Sidebar</Typography>
+              </button>
+            </div>
           </div>
         </aside>
       ) : (
         <div className='relative'>
           <button
             onClick={handleToggle}
-            className=' bg-Purple rounded-r-full p-3 text-White absolute top-[35rem]'
+            className=' bg-Purple rounded-r-full p-3 text-White absolute top-[35rem] hover:bg-PurpleLighter hover:text-Purple'
           >
             <RemoveRedEyeIcon />
           </button>
