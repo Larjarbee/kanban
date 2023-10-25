@@ -16,6 +16,8 @@ export default function ColumnList() {
     setOpen(false);
   };
 
+  const textColor = mode === 'light' ? 'black' : 'white';
+
   return (
     <>
       <div className='flex gap-5 w-screen'>
@@ -44,13 +46,9 @@ export default function ColumnList() {
                       mode === 'light' ? 'bg-White' : 'bg-DarkGrey'
                     } shadow-md p-5 rounded-xl space-y-2`}
                   >
-                    {mode === 'light' ? (
-                      <Typography variant='body2'>{todo.title}</Typography>
-                    ) : (
-                      <Typography variant='body2' sx={{ color: 'white' }}>
-                        {todo.title}
-                      </Typography>
-                    )}
+                    <Typography variant='body2' sx={{ color: textColor }}>
+                      {todo.title}
+                    </Typography>
                     <Typography variant='body2' sx={{ color: '#828FA3' }}>
                       {countCompletedSubtasks(todo.substasks)} of{' '}
                       {todo.substasks.length} substasks
