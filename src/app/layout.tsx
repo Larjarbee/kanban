@@ -7,6 +7,7 @@ import { Box } from '@mui/material';
 import { ThemeProvider } from '@/hooks/ThemeContext';
 import ContainerWrapper from '@/common/ContainerWrapper';
 import './globals.css';
+import HomeWrapper from '@/common/HomeWrapper';
 
 const jakarta = Plus_Jakarta_Sans({
   weight: ['200', '300', '400', '500', '600', '700', '800'],
@@ -29,14 +30,14 @@ export default function RootLayout({
         <ThemeConfig>
           <ThemeProvider>
             <ContainerWrapper>
-              <Box className='flex'>
-                <Box className='fixed w-[20%]'>
+              <Box className='flex overflow-auto'>
+                <Box>
                   <Sidebar />
                 </Box>
-                <Box className='w-[80%] ml-[20%] overflow-auto'>
+                <HomeWrapper>
                   <Navbar />
                   {children}
-                </Box>
+                </HomeWrapper>
               </Box>
             </ContainerWrapper>
           </ThemeProvider>

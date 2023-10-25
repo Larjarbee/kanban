@@ -12,94 +12,111 @@ import { Switch, Typography, styled } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ThemeContext } from '@/hooks/ThemeContext';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { mode, toggle } = useContext(ThemeContext);
+  const { mode, toggle, toggleNav, handleToggle } = useContext(ThemeContext);
 
   return (
-    <aside
-      className={`${
-        mode === 'light' ? 'bg-White' : 'bg-DarkGrey border-Grey'
-      } border-r-2 flex h-screen flex-col justify-between`}
-    >
-      <div className='space-y-8'>
-        <div className='flex gap-3 items-center justify-center py-5'>
-          <Image src={logo} width={24} height={25} alt='logo' />
-          <div
-            className={`${
-              mode === 'dark' ? 'text-White' : 'text-VeryDarkGrey'
-            } `}
-          >
-            <Typography variant='h4' sx={{ fontWeight: 900 }}>
-              Kanban
-            </Typography>
-          </div>
-        </div>
-
-        <div className='flex flex-col space-y-8 items-center text-MediumGrey'>
-          <Typography variant='body1' className=' tracking-widest'>
-            ALL BOARDS (3)
-          </Typography>
-
-          <div className='w-full pr-5'>
-            {links.map((link, i) => (
-              <Link
-                key={i}
-                className={`link ${
-                  pathname === link.path
-                    ? 'flex items-center justify-center py-3 gap-3 text-White rounded-r-full bg-Purple'
-                    : 'flex items-center pl-14 gap-3 py-3 hover:bg-PurpleLight hover:text-White hover:rounded-r-full hover:transition-all'
-                }`}
-                href={link.path}
+    <>
+      {toggleNav ? (
+        <aside
+          className={`${
+            mode === 'light' ? 'bg-White' : 'bg-DarkGrey border-Grey'
+          } fixed w-[20%] border-r-2 flex h-screen flex-col justify-between`}
+        >
+          <div className='space-y-8'>
+            <div className='flex gap-3 items-center justify-center py-5'>
+              <Image src={logo} width={24} height={25} alt='logo' />
+              <div
+                className={`${
+                  mode === 'dark' ? 'text-White' : 'text-VeryDarkGrey'
+                } `}
               >
-                <div>
-                  <Image
-                    src={pathname == link.path ? box1 : box}
-                    width={16}
-                    height={16}
-                    alt='logo'
-                  />
-                </div>
-
-                <Typography variant='body1'>{link.name}</Typography>
-              </Link>
-            ))}
-            <div className='flex items-center pl-[27px] justify-center gap-3 py-3 text-Purple hover:cursor-pointer'>
-              <div>
-                <Image src={box2} width={16} height={16} alt='logo' />
+                <Typography variant='h4' sx={{ fontWeight: 900 }}>
+                  Kanban
+                </Typography>
               </div>
-              <Link href='#'>
-                <Typography variant='body1'>+ Create New Board</Typography>
-              </Link>
+            </div>
+
+            <div className='flex flex-col space-y-8 items-center text-MediumGrey'>
+              <Typography variant='body1' className=' tracking-widest'>
+                ALL BOARDS (3)
+              </Typography>
+
+              <div className='w-full pr-5'>
+                {links.map((link, i) => (
+                  <Link
+                    key={i}
+                    className={`link ${
+                      pathname === link.path
+                        ? 'flex items-center justify-center py-3 gap-3 text-White rounded-r-full bg-Purple'
+                        : 'flex items-center pl-14 gap-3 py-3 hover:bg-PurpleLight hover:text-White hover:rounded-r-full hover:transition-all'
+                    }`}
+                    href={link.path}
+                  >
+                    <div>
+                      <Image
+                        src={pathname == link.path ? box1 : box}
+                        width={16}
+                        height={16}
+                        alt='logo'
+                      />
+                    </div>
+
+                    <Typography variant='body1'>{link.name}</Typography>
+                  </Link>
+                ))}
+                <div className='flex items-center pl-[27px] justify-center gap-3 py-3 text-Purple hover:cursor-pointer'>
+                  <div>
+                    <Image src={box2} width={16} height={16} alt='logo' />
+                  </div>
+                  <Link href='#'>
+                    <Typography variant='body1'>+ Create New Board</Typography>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className='py-10 space-y-5'>
-        <div
-          className={`p-3 mx-5 rounded-lg ${
-            mode === 'light' ? 'bg-LightGrey' : 'bg-VeryDarkGrey'
-          } flex gap-5 justify-center items-center`}
-        >
-          <Image src={dark} width={16} height={16} alt='logo' />
-          <AntSwitch
-            defaultChecked
-            inputProps={{ 'aria-label': 'ant design' }}
-            onClick={toggle}
-          />
-          <Image src={light} width={16} height={16} alt='logo' />
-        </div>
+          <div className='py-10 space-y-5'>
+            <div
+              className={`p-3 mx-5 rounded-lg ${
+                mode === 'light' ? 'bg-LightGrey' : 'bg-VeryDarkGrey'
+              } flex gap-5 justify-center items-center`}
+            >
+              <Image src={dark} width={16} height={16} alt='logo' />
+              <AntSwitch
+                defaultChecked
+                inputProps={{ 'aria-label': 'ant design' }}
+                onClick={toggle}
+              />
+              <Image src={light} width={16} height={16} alt='logo' />
+            </div>
 
-        <div className='flex items-center pl-3 gap-3 text-MediumGrey hover:cursor-pointer'>
-          <div>
-            <Image src={eye} width={16} height={16} alt='logo' />
+            <button
+              onClick={handleToggle}
+              className='flex items-center pl-3 gap-3 text-MediumGrey hover:cursor-pointer'
+            >
+              <div>
+                <Image src={eye} width={16} height={16} alt='logo' />
+              </div>
+              <Typography variant='body1'>Hide Sidebar</Typography>
+            </button>
           </div>
-          <Typography variant='body1'>Hide Sidebar</Typography>
+        </aside>
+      ) : (
+        <div className='relative'>
+          <button
+            onClick={handleToggle}
+            className=' bg-Purple rounded-r-full p-3 text-White absolute top-[35rem]'
+          >
+            <RemoveRedEyeIcon />
+          </button>
         </div>
-      </div>
-    </aside>
+      )}
+    </>
   );
 }
 

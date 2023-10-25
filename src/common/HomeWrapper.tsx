@@ -1,18 +1,17 @@
 'use client';
-
-import React, { useContext } from 'react';
 import { ThemeContext } from '@/hooks/ThemeContext';
+import React, { useContext } from 'react';
 
-export default function ContainerWrapper({
+export default function HomeWrapper({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { mode } = useContext(ThemeContext);
+  const { toggleNav } = useContext(ThemeContext);
   return (
     <div
       className={`${
-        mode === 'light' ? 'bg-LighterGrey' : 'bg-VeryDarkGrey'
+        toggleNav === false ? 'w-full ml-0' : 'w-[80%] ml-[20%]'
       } overflow-auto`}
     >
       {children}

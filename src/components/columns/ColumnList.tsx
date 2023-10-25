@@ -5,8 +5,9 @@ import { ThemeContext } from '@/hooks/ThemeContext';
 
 export default function ColumnList() {
   const { mode } = useContext(ThemeContext);
+
   return (
-    <div className=' overflow-y-hidden flex gap-5'>
+    <div className='overflow-auto flex gap-5'>
       <div className='flex gap-5'>
         {DUMMY_COL.map((column, index) => (
           <div key={index} className='space-y-5'>
@@ -26,20 +27,23 @@ export default function ColumnList() {
 
             <div className=' space-y-5'>
               {column.todo.map((todo, i) => (
-                <div key={i}>
-                  <div
-                    className={`${
-                      mode === 'light' ? 'bg-White' : 'bg-DarkGrey'
-                    } shadow-md p-5 rounded-xl`}
-                  >
-                    {mode === 'light' ? (
-                      <Typography variant='body2'>{todo.title}</Typography>
-                    ) : (
-                      <Typography variant='body2' sx={{ color: 'white' }}>
-                        {todo.title}
-                      </Typography>
-                    )}
-                  </div>
+                <div
+                  key={i}
+                  className={`${
+                    mode === 'light' ? 'bg-White' : 'bg-DarkGrey'
+                  } shadow-md p-5 rounded-xl space-y-2`}
+                >
+                  {mode === 'light' ? (
+                    <Typography variant='body2'>{todo.title}</Typography>
+                  ) : (
+                    <Typography variant='body2' sx={{ color: 'white' }}>
+                      {todo.title}
+                    </Typography>
+                  )}
+                  <Typography variant='body2' sx={{ color: '#828FA3' }}>
+                    {countCompletedSubtasks(todo.substasks)} of{' '}
+                    {todo.substasks.length} substasks
+                  </Typography>
                 </div>
               ))}
             </div>
@@ -74,20 +78,39 @@ export const DUMMY_COL = [
         title: 'Build UI for onboarding flow',
         desc: 'We know what we are planning to build for version one. Now we need to finalise the first pricing model we will use. Keep iterating the subtasks until we have a coherent proposition.',
         substasks: [
-          'Research competitor pricing and business models',
-          'Outline a business model that works for our solution',
-          'Talk to potential customers about our proposed solution and ask for fair price expectancy',
+          {
+            task: 'Research competitor pricing and business models',
+            completed: true,
+          },
+          {
+            task: 'Outline a business model that works for our solution',
+            completed: true,
+          },
+          {
+            task: 'Talk to potential customers about our proposed solution and ask for fair price expectancy',
+            completed: false,
+          },
         ],
       },
       {
         title: 'Build UI for search',
         desc: 'We know what we are planning to build for version one. Now we need to finalise the first pricing model we will use. Keep iterating the subtasks until we have a coherent proposition.',
-        substasks: ['Research competitor pricing and business models'],
+        substasks: [
+          {
+            task: 'Research competitor pricing and business models',
+            completed: true,
+          },
+        ],
       },
       {
-        title: 'Build UI for search',
+        title: 'Build settings UI',
         desc: 'We know what we are planning to build for version one. Now we need to finalise the first pricing model we will use. Keep iterating the subtasks until we have a coherent proposition.',
-        substasks: ['Research competitor pricing and business models'],
+        substasks: [
+          {
+            task: 'Research competitor pricing and business models',
+            completed: false,
+          },
+        ],
       },
     ],
   },
@@ -99,14 +122,55 @@ export const DUMMY_COL = [
         title: 'Design settings and search pages',
         desc: 'We know what we are planning to build for version one. Now we need to finalise the first pricing model we will use. Keep iterating the subtasks until we have a coherent proposition.',
         substasks: [
-          'Research competitor pricing and business models',
-          'Outline a business model that works for our solution',
+          {
+            task: 'Research competitor pricing and business models',
+            completed: true,
+          },
+          {
+            task: 'Outline a business model that works for our solution',
+            completed: true,
+          },
         ],
       },
       {
         title: 'Add account management endpoints',
         desc: 'We know what we are planning to build for version one. Now we need to finalise the first pricing model we will use. Keep iterating the subtasks until we have a coherent proposition.',
-        substasks: ['Research competitor pricing and business models'],
+        substasks: [
+          {
+            task: 'Research competitor pricing and business models',
+            completed: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    status: 'Doing',
+    color: '#8471F2',
+    todo: [
+      {
+        title: 'Design settings and search pages',
+        desc: 'We know what we are planning to build for version one. Now we need to finalise the first pricing model we will use. Keep iterating the subtasks until we have a coherent proposition.',
+        substasks: [
+          {
+            task: 'Research competitor pricing and business models',
+            completed: true,
+          },
+          {
+            task: 'Outline a business model that works for our solution',
+            completed: true,
+          },
+        ],
+      },
+      {
+        title: 'Add account management endpoints',
+        desc: 'We know what we are planning to build for version one. Now we need to finalise the first pricing model we will use. Keep iterating the subtasks until we have a coherent proposition.',
+        substasks: [
+          {
+            task: 'Research competitor pricing and business models',
+            completed: true,
+          },
+        ],
       },
     ],
   },
@@ -130,3 +194,17 @@ export const DUMMY_COL = [
     ],
   },
 ];
+
+export function countCompletedSubtasks(data: any) {
+  let count = 0;
+
+  if (Array.isArray(data)) {
+    data.forEach((subtask) => {
+      if (subtask.completed === true) {
+        count++;
+      }
+    });
+  }
+
+  return count;
+}
