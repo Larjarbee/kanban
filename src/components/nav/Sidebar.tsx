@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ThemeContext } from '@/hooks/ThemeContext';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { DUMMY_COL } from '../columns/ColumnList';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -42,7 +43,7 @@ export default function Sidebar() {
 
             <div className='flex flex-col space-y-8 items-center text-MediumGrey'>
               <Typography variant='body1' className=' tracking-widest'>
-                ALL BOARDS (3)
+                ALL BOARDS ({DUMMY_COL.length})
               </Typography>
 
               <div className='w-full pr-5'>

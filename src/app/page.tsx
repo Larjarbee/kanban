@@ -6,7 +6,7 @@ import { Typography } from '@mui/material';
 export default function Home() {
   const columns = false;
   return (
-    <div className='p-5 w-full rounded-lg border-Purple border-2 overflow-auto ...'>
+    <div className='p-5'>
       {columns ? (
         <div className='my-[25%] text-MediumGrey text-center space-y-5'>
           <Typography variant='body1'>
@@ -17,7 +17,9 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <ColumnList />
+        <div className=' overflow-auto ...'>
+          <ColumnList />
+        </div>
       )}
     </div>
   );
