@@ -1,17 +1,15 @@
 import * as React from 'react';
 import Dialog from '@mui/material/Dialog';
 import {
-  IconButton,
   Typography,
-  Checkbox,
   FormControl,
   Select,
   MenuItem,
   TextField,
+  IconButton,
 } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { ThemeContext } from '@/hooks/ThemeContext';
-import Button from '@/common/Button';
+import CloseIcon from '@mui/icons-material/Close';
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -72,11 +70,47 @@ export function AddTaskForm(props: SimpleDialogProps) {
               hiddenLabel
               multiline
               rows={5}
+              sx={{
+                color: textColor,
+                border: border,
+                borderColor: borderColor,
+              }}
               //   value={values.first_name}
               //   onBlur={handleBlur}
               //   onChange={handleChange}
               //   error={errors.first_name && touched.first_name}
             />
+          </FormControl>
+
+          <FormControl fullWidth className='space-y-3'>
+            <Typography variant='body2'>Subtasks</Typography>
+            <div className='flex items-center gap-3'>
+              <TextField
+                id='subtasks'
+                name='subtasks'
+                placeholder='e.g. Make coffee'
+                hiddenLabel
+                fullWidth
+                sx={{
+                  color: textColor,
+                  border: border,
+                  borderColor: borderColor,
+                }}
+                //   value={values.first_name}
+                //   onBlur={handleBlur}
+                //   onChange={handleChange}
+                //   error={errors.first_name && touched.first_name}
+              />
+              <div>
+                <IconButton sx={{ color: borderColor }}>
+                  <CloseIcon />
+                </IconButton>
+              </div>
+            </div>
+
+            <button className='px-4 w-full py-3 bg-PurpleLighter text-Purple rounded-full hover:opacity-60'>
+              + Add New Subtask
+            </button>
           </FormControl>
 
           <div className='space-y-3'>
@@ -121,7 +155,7 @@ export function AddTaskForm(props: SimpleDialogProps) {
               </Select>
             </FormControl>
           </div>
-          <button className='px-4 w-full py-2 bg-Purple text-White rounded-full hover:opacity-60'>
+          <button className='px-4 w-full py-3 bg-Purple text-White rounded-full hover:opacity-60'>
             Create Task
           </button>
         </form>

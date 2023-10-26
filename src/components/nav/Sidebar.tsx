@@ -18,6 +18,7 @@ import { DUMMY_COL } from '../columns/ColumnList';
 export default function Sidebar() {
   const pathname = usePathname();
   const { mode, toggle, toggleNav, handleToggle } = useContext(ThemeContext);
+  console.log(mode);
 
   return (
     <>

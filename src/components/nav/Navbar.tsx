@@ -60,7 +60,7 @@ export default function Navbar() {
             <button
               // disabled={true}
               onClick={handleClickOpen}
-              className='px-4 py-2 bg-Purple text-White rounded-full hover:opacity-60 disabled:cursor-not-allowed disabled:opacity-70'
+              className='px-4 py-3 bg-Purple text-White rounded-full hover:opacity-60 disabled:cursor-not-allowed disabled:opacity-70'
             >
               + Add New Task
             </button>

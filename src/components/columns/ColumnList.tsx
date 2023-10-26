@@ -38,7 +38,10 @@ export default function ColumnList() {
                 </Typography>
               </div>
 
-              <div onClick={handleClickOpen} className=' space-y-5'>
+              <div
+                onClick={handleClickOpen}
+                className=' space-y-5 hover:text-Purple'
+              >
                 {column.todo.map((todo, i) => (
                   <div
                     key={i}

@@ -23,7 +23,7 @@ module.exports = {
         LightRed: '#FF9898',
         Purple: '#635FC7',
         PurpleLight: '#A8A4FF',
-        PurpleLighter: '#625fc71c',
+        PurpleLighter: '#625fc73c',
         Black: '#000112',
         VeryDarkGrey: '#20212C',
       },

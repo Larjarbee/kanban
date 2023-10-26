@@ -14,8 +14,9 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [toggleNav, setToggleNav] = useState(true);
 
   const toggle = () => {
-    setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    setMode((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
+
   const handleToggle = () => {
     setToggleNav(() => !toggleNav);
   };
