@@ -102,7 +102,7 @@ export function AddTaskForm(props: SimpleDialogProps) {
                 //   error={errors.first_name && touched.first_name}
               />
               <div>
-                <IconButton sx={{ color: borderColor }}>
+                <IconButton sx={{ color: '#828FA3' }}>
                   <CloseIcon />
                 </IconButton>
               </div>

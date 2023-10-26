@@ -1,23 +1,28 @@
 'use client';
-import { IconButton, Typography } from '@mui/material';
+import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import React, { useContext, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { ThemeContext } from '@/hooks/ThemeContext';
 import logo from '../../../public/svgs/Group 15.svg';
 import Image from 'next/image';
 import { AddTaskForm } from '../task/AddTaskForm';
+import useMenu from '@/common/useMenu';
 
 export default function Navbar() {
   const { mode, toggleNav } = useContext(ThemeContext);
-  const [open, setOpen] = useState(false);
+  const { open, anchorEl, handleClick, handleCloses } = useMenu();
+  const [opens, setOpens] = useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpens(true);
   };
 
   const handleClose = (value: string) => {
-    setOpen(false);
+    setOpens(false);
   };
+
+  const textColor = mode === 'light' ? 'black' : 'white';
+  const selectColor = mode === 'light' ? '#F4F7FD' : '#20212C';
 
   return (
     <>
@@ -64,17 +69,43 @@ export default function Navbar() {
             >
               + Add New Task
             </button>
-            <IconButton>
-              {mode === 'light' ? (
-                <MoreVertIcon />
-              ) : (
-                <MoreVertIcon sx={{ color: 'white' }} />
-              )}
-            </IconButton>
+            <div>
+              <IconButton
+                aria-label='more'
+                id='long-button'
+                aria-controls={open ? 'long-menu' : undefined}
+                aria-expanded={open ? 'true' : undefined}
+                aria-haspopup='true'
+                onClick={handleClick}
+              >
+                <MoreVertIcon sx={{ color: textColor }} />
+              </IconButton>
+              <Menu
+                id='long-menu'
+                className='mt-5'
+                MenuListProps={{
+                  'aria-labelledby': 'long-button',
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleCloses}
+                PaperProps={{
+                  style: {
+                    backgroundColor: selectColor,
+                    color: textColor,
+                  },
+                }}
+              >
+                <MenuItem onClick={handleCloses}>Edit Board</MenuItem>
+                <MenuItem onClick={handleCloses} sx={{ color: '#EA5555' }}>
+                  Delete Board
+                </MenuItem>
+              </Menu>
+            </div>
           </div>
         </div>
       </nav>
-      <AddTaskForm open={open} onClose={handleClose} setOpen={setOpen} />
+      <AddTaskForm open={opens} onClose={handleClose} setOpen={setOpens} />
     </>
   );
 }

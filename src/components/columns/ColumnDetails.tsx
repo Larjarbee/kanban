@@ -7,19 +7,22 @@ import {
   FormControl,
   Select,
   MenuItem,
+  Menu,
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { ThemeContext } from '@/hooks/ThemeContext';
+import useMenu from '@/common/useMenu';
 
 export interface SimpleDialogProps {
-  open: boolean;
+  opens: boolean;
   setOpen: (value: boolean) => void;
   onClose: (value: string) => void;
 }
 
 export function ColumnDetails(props: SimpleDialogProps) {
-  const { onClose, open, setOpen } = props;
+  const { onClose, opens, setOpen } = props;
   const { mode } = React.useContext(ThemeContext);
+  const { open, anchorEl, handleClick, handleCloses } = useMenu();
 
   const handleClose = () => {
     setOpen(false);
@@ -30,7 +33,7 @@ export function ColumnDetails(props: SimpleDialogProps) {
   const borderColor = mode === 'light' ? '#F4F7FD' : '#828FA3';
 
   return (
-    <Dialog onClose={handleClose} open={open}>
+    <Dialog onClose={handleClose} open={opens}>
       <div
         className={`${
           mode === 'light' ? 'bg-White' : 'bg-VeryDarkGrey'
@@ -44,10 +47,39 @@ export function ColumnDetails(props: SimpleDialogProps) {
             Research pricing points of various competitors and trial different
             business models
           </Typography>
+
           <div>
-            <IconButton>
+            <IconButton
+              aria-label='more'
+              id='long-button'
+              aria-controls={open ? 'long-menu' : undefined}
+              aria-expanded={open ? 'true' : undefined}
+              aria-haspopup='true'
+              onClick={handleClick}
+            >
               <MoreVertIcon sx={{ color: textColor }} />
             </IconButton>
+            <Menu
+              id='long-menu'
+              className='mt-5'
+              MenuListProps={{
+                'aria-labelledby': 'long-button',
+              }}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleCloses}
+              PaperProps={{
+                style: {
+                  backgroundColor: selectColor,
+                  color: textColor,
+                },
+              }}
+            >
+              <MenuItem onClick={handleCloses}>Edit Task</MenuItem>
+              <MenuItem onClick={handleCloses} sx={{ color: '#EA5555' }}>
+                Delete Task
+              </MenuItem>
+            </Menu>
           </div>
         </div>
 

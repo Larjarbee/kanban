@@ -38,20 +38,18 @@ export default function ColumnList() {
                 </Typography>
               </div>
 
-              <div
-                onClick={handleClickOpen}
-                className=' space-y-5 hover:text-Purple'
-              >
+              <div onClick={handleClickOpen} className=' space-y-5'>
                 {column.todo.map((todo, i) => (
                   <div
                     key={i}
                     className={`${
                       mode === 'light' ? 'bg-White' : 'bg-DarkGrey'
-                    } shadow-md p-5 rounded-xl space-y-2`}
+                    } shadow-md p-5 rounded-xl space-y-2 hover:bg-PurpleLighter`}
                   >
                     <Typography variant='body2' sx={{ color: textColor }}>
                       {todo.title}
                     </Typography>
+
                     <Typography variant='body2' sx={{ color: '#828FA3' }}>
                       {countCompletedSubtasks(todo.substasks)} of{' '}
                       {todo.substasks.length} substasks
@@ -71,7 +69,7 @@ export default function ColumnList() {
           <Typography variant='body1'>+ New Column</Typography>
         </div>
       </div>
-      <ColumnDetails open={open} onClose={handleClose} setOpen={setOpen} />
+      <ColumnDetails opens={open} onClose={handleClose} setOpen={setOpen} />
     </>
   );
 }
