@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import NextAppDirEmotionCacheProvider from './EmotionCache';
@@ -15,7 +15,9 @@ export default function ThemeConfig({
   // const { mode } = useThemeToggle();
   const { mode } = useContext(ThemeContext);
 
-  const theme = createTheme(getThemeConfig(mode));
+  const theme = useMemo(() => createTheme(getThemeConfig(mode)), [mode]);
+
+  // const theme = createTheme(getThemeConfig(mode));
   return (
     <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
       <ThemeProvider theme={theme}>

@@ -27,13 +27,14 @@ export function ColumnDetails(props: SimpleDialogProps) {
 
   const textColor = mode === 'light' ? 'black' : 'white';
   const selectColor = mode === 'light' ? '#F4F7FD' : '#20212C';
+  const borderColor = mode === 'light' ? '#F4F7FD' : '#828FA3';
 
   return (
     <Dialog onClose={handleClose} open={open}>
       <div
         className={`${
           mode === 'light' ? 'bg-White' : 'bg-VeryDarkGrey'
-        } p-5 space-y-8`}
+        } p-10 space-y-8`}
       >
         <div className='flex justify-between'>
           <Typography
@@ -96,7 +97,8 @@ export function ColumnDetails(props: SimpleDialogProps) {
               sx={{
                 color: textColor,
                 border: 1,
-                // borderColor: '#828FA3',
+                outline: 0,
+                borderColor: borderColor,
               }}
               displayEmpty
               inputProps={{
