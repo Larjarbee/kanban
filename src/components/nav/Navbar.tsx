@@ -7,11 +7,15 @@ import logo from '../../../public/svgs/Group 15.svg';
 import Image from 'next/image';
 import { AddTaskForm } from '../task/AddTaskForm';
 import useMenu from '@/common/useMenu';
+import { EditBoardForm } from '../board/EditBoardForm';
+import { DeleteBoard } from '../board/DeleteBoard';
 
 export default function Navbar() {
   const { mode, toggleNav } = useContext(ThemeContext);
   const { open, anchorEl, handleClick, handleCloses } = useMenu();
   const [opens, setOpens] = useState(false);
+  const [openEditBoard, setOpenEditBoard] = useState(false);
+  const [openDeleteBoard, setOpenDeleteBoard] = useState(false);
 
   const handleClickOpen = () => {
     setOpens(true);
@@ -19,6 +23,22 @@ export default function Navbar() {
 
   const handleClose = (value: string) => {
     setOpens(false);
+  };
+
+  const handleClickOpenEditBoard = () => {
+    setOpenEditBoard(true);
+  };
+
+  const handleCloseEditBoard = (value: string) => {
+    setOpenEditBoard(false);
+  };
+
+  const handleClickOpenDeleteBoard = () => {
+    setOpenDeleteBoard(true);
+  };
+
+  const handleCloseDeleteBoard = (value: string) => {
+    setOpenDeleteBoard(false);
   };
 
   const textColor = mode === 'light' ? 'black' : 'white';
@@ -69,6 +89,7 @@ export default function Navbar() {
             >
               + Add New Task
             </button>
+
             <div>
               <IconButton
                 aria-label='more'
@@ -96,8 +117,13 @@ export default function Navbar() {
                   },
                 }}
               >
-                <MenuItem onClick={handleCloses}>Edit Board</MenuItem>
-                <MenuItem onClick={handleCloses} sx={{ color: '#EA5555' }}>
+                <MenuItem onClick={handleClickOpenEditBoard}>
+                  Edit Board
+                </MenuItem>
+                <MenuItem
+                  onClick={handleClickOpenDeleteBoard}
+                  sx={{ color: '#EA5555' }}
+                >
                   Delete Board
                 </MenuItem>
               </Menu>
@@ -106,6 +132,16 @@ export default function Navbar() {
         </div>
       </nav>
       <AddTaskForm open={opens} onClose={handleClose} setOpen={setOpens} />
+      <EditBoardForm
+        open={openEditBoard}
+        onClose={handleCloseEditBoard}
+        setOpen={setOpenEditBoard}
+      />
+      <DeleteBoard
+        open={openDeleteBoard}
+        onClose={handleCloseDeleteBoard}
+        setOpen={setOpenDeleteBoard}
+      />
     </>
   );
 }

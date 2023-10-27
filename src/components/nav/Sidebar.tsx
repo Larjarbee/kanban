@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import logo from '../../../public/svgs/Group 15.svg';
 import eye from '../../../public/svgs/eye-slash.1.svg';
 import light from '../../../public/svgs/Combined Shape.svg';
@@ -14,10 +14,20 @@ import { usePathname } from 'next/navigation';
 import { ThemeContext } from '@/hooks/ThemeContext';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { DUMMY_COL } from '../columns/ColumnList';
+import { AddBoardForm } from '../board/AddBoardForm';
 
 export default function Sidebar() {
   const pathname = usePathname();
   const { mode, toggle, toggleNav, handleToggle } = useContext(ThemeContext);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (value: string) => {
+    setOpen(false);
+  };
 
   return (
     <>
@@ -73,13 +83,14 @@ export default function Sidebar() {
                   <div>
                     <Image src={box2} width={16} height={16} alt='logo' />
                   </div>
-                  <Link href='#'>
+                  <button onClick={handleClickOpen}>
                     <Typography variant='body1'>+ Create New Board</Typography>
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
+          <AddBoardForm open={open} onClose={handleClose} setOpen={setOpen} />
 
           <div className='py-10 space-y-5'>
             <div

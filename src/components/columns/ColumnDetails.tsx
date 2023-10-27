@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import {
   IconButton,
@@ -12,6 +12,8 @@ import {
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { ThemeContext } from '@/hooks/ThemeContext';
 import useMenu from '@/common/useMenu';
+import { EditTaskForm } from '../task/EditTaskForm';
+import { DeleteTask } from '../task/DeleteTask';
 
 export interface SimpleDialogProps {
   opens: boolean;
@@ -21,8 +23,26 @@ export interface SimpleDialogProps {
 
 export function ColumnDetails(props: SimpleDialogProps) {
   const { onClose, opens, setOpen } = props;
-  const { mode } = React.useContext(ThemeContext);
+  const { mode } = useContext(ThemeContext);
   const { open, anchorEl, handleClick, handleCloses } = useMenu();
+  const [openEditTask, setOpenEditTask] = useState(false);
+  const [openDeleteTask, setOpenDeleteTask] = useState(false);
+
+  const handleClickOpenEditTask = () => {
+    setOpenEditTask(true);
+  };
+
+  const handleCloseEditTask = (value: string) => {
+    setOpenEditTask(false);
+  };
+
+  const handleClickOpenDeleteTask = () => {
+    setOpenDeleteTask(true);
+  };
+
+  const handleCloseDeleteTask = (value: string) => {
+    setOpenDeleteTask(false);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -75,13 +95,27 @@ export function ColumnDetails(props: SimpleDialogProps) {
                 },
               }}
             >
-              <MenuItem onClick={handleCloses}>Edit Task</MenuItem>
-              <MenuItem onClick={handleCloses} sx={{ color: '#EA5555' }}>
+              <MenuItem onClick={handleClickOpenEditTask}>Edit Task</MenuItem>
+              <MenuItem
+                onClick={handleClickOpenDeleteTask}
+                sx={{ color: '#EA5555' }}
+              >
                 Delete Task
               </MenuItem>
             </Menu>
           </div>
         </div>
+
+        <EditTaskForm
+          open={openEditTask}
+          onClose={handleCloseEditTask}
+          setOpen={setOpenEditTask}
+        />
+        <DeleteTask
+          open={openDeleteTask}
+          onClose={handleCloseDeleteTask}
+          setOpen={setOpenDeleteTask}
+        />
 
         <Typography variant='body2' sx={{ color: '#828FA3' }}>
           We know what we're planning to build for version one. Now we need to
@@ -101,7 +135,7 @@ export function ColumnDetails(props: SimpleDialogProps) {
                 key={index}
                 className={`flex items-center gap-2 p-1 rounded-lg ${
                   mode === 'light' ? 'bg-LighterGrey' : 'bg-Black'
-                }`}
+                } hover:bg-PurpleLighter`}
               >
                 <Checkbox defaultChecked={task.completed} />
                 <Typography
