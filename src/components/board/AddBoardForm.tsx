@@ -1,9 +1,9 @@
-('');
 import React, { FormEvent, useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import { Typography, FormControl, TextField, IconButton } from '@mui/material';
 import { ThemeContext } from '@/hooks/ThemeContext';
 import CloseIcon from '@mui/icons-material/Close';
+import { useSWRConfig } from 'swr';
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -16,24 +16,25 @@ export function AddBoardForm(props: SimpleDialogProps) {
   const { mode } = React.useContext(ThemeContext);
   const [name, setName] = useState('');
   const [columns, setColumns] = useState('');
+  const { mutate } = useSWRConfig();
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const colors = [
-    '#3E3F4E',
-    '#2B2C37',
-    '#828FA3',
-    '#E4EBFA',
-    '#F4F7FD',
-    '#FFFFFF',
-    '#EA5555',
-    '#FF9898',
     '#635FC7',
+    '#FF9898',
+    '#EA5555',
+    '#625fc73c',
     '#A8A4FF',
-    '#000112',
-    '#20212C',
+    '#4842efd2',
+    '#e9ef42d2',
+    '#f1f58fd2',
+    '#f58fd3d2',
+    '#8fe4f5d2',
+    '#2cceefd2',
+    '#ef2c60d2',
   ];
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -50,6 +51,7 @@ export function AddBoardForm(props: SimpleDialogProps) {
         method: 'POST',
         body: JSON.stringify(data),
       });
+      mutate('/api/boards');
     } catch (err) {
       console.log(err);
     }

@@ -29,3 +29,22 @@ export const POST = async (request: any) => {
     return new NextResponse('Database Error', { status: 500 });
   }
 };
+
+export const PATCH = async (request: any) => {
+  const { id, body } = await request.json();
+
+  const newBoards = new Boards(id, body, {
+    new: true,
+  });
+
+  try {
+    await connect();
+
+    await newBoards.save();
+
+    return new NextResponse('Board has been updated', { status: 201 });
+  } catch (err) {
+    console.log(err);
+    return new NextResponse('Database Error', { status: 500 });
+  }
+};

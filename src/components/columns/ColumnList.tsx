@@ -3,10 +3,13 @@ import { Typography } from '@mui/material';
 import React, { useContext, useState } from 'react';
 import { ThemeContext } from '@/hooks/ThemeContext';
 import { ColumnDetails } from './ColumnDetails';
+import useSWR from 'swr';
+import { fetcher } from '@/common/fetcher';
 
 export default function ColumnList() {
   const { mode } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
+  const { data, error, isLoading } = useSWR('/api/boards', fetcher);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -22,41 +25,45 @@ export default function ColumnList() {
     <>
       <div className='flex gap-5 w-screen'>
         <div className='flex gap-5'>
-          {DUMMY_COL.map((column, index) => (
-            <div key={index} className='space-y-5 w-[40%]'>
-              <div className='flex gap-3 items-center'>
-                <div
-                  style={{ backgroundColor: column.color }}
-                  className='h-2 w-2 rounded-full'
-                />
-                <Typography
-                  variant='body2'
-                  sx={{ color: '#828FA3' }}
-                  className=' tracking-widest uppercase'
-                >
-                  {column.status} ({column.todo.length})
-                </Typography>
-              </div>
-
-              <div onClick={handleClickOpen} className=' space-y-5'>
-                {column.todo.map((todo, i) => (
-                  <div
-                    key={i}
-                    className={`${
-                      mode === 'light' ? 'bg-White' : 'bg-DarkGrey'
-                    } shadow-md p-5 rounded-xl space-y-2 hover:bg-PurpleLighter`}
-                  >
-                    <Typography variant='body2' sx={{ color: textColor }}>
-                      {todo.title}
-                    </Typography>
-
-                    <Typography variant='body2' sx={{ color: '#828FA3' }}>
-                      {countCompletedSubtasks(todo.substasks)} of{' '}
-                      {todo.substasks.length} substasks
+          {data?.map((board: any) => (
+            <div key={board._id} className='space-y-5 [w-40%]'>
+              {board?.columns?.map((column: any) => (
+                <div key={column?._id}>
+                  <div className='flex gap-3 items-center'>
+                    <div
+                      style={{ backgroundColor: column?.color }}
+                      className='h-2 w-2 rounded-full'
+                    />
+                    <Typography
+                      variant='body2'
+                      sx={{ color: '#828FA3' }}
+                      className=' tracking-widest uppercase'
+                    >
+                      {column?.name} ({column?.tasks?.length || 0})
                     </Typography>
                   </div>
-                ))}
-              </div>
+
+                  {/* <div onClick={handleClickOpen} className=' space-y-5'>
+                    {column.todo.map((todo: any, i: number) => (
+                      <div
+                        key={i}
+                        className={`${
+                          mode === 'light' ? 'bg-White' : 'bg-DarkGrey'
+                        } shadow-md p-5 rounded-xl space-y-2 hover:bg-PurpleLighter`}
+                      >
+                        <Typography variant='body2' sx={{ color: textColor }}>
+                          {todo.title}
+                        </Typography>
+
+                        <Typography variant='body2' sx={{ color: '#828FA3' }}>
+                          {countCompletedSubtasks(todo.substasks)} of{' '}
+                          {todo.substasks.length} substasks
+                        </Typography>
+                      </div>
+                    ))}
+                  </div> */}
+                </div>
+              ))}
             </div>
           ))}
         </div>
