@@ -25,6 +25,7 @@ export const POST = async (request: any) => {
 
     return new NextResponse('Board has been created', { status: 201 });
   } catch (err) {
+    console.log(err);
     return new NextResponse('Database Error', { status: 500 });
   }
 };

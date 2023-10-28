@@ -1,4 +1,5 @@
-import * as React from 'react';
+('');
+import React, { FormEvent, useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import { Typography, FormControl, TextField, IconButton } from '@mui/material';
 import { ThemeContext } from '@/hooks/ThemeContext';
@@ -13,13 +14,49 @@ export interface SimpleDialogProps {
 export function AddBoardForm(props: SimpleDialogProps) {
   const { onClose, open, setOpen } = props;
   const { mode } = React.useContext(ThemeContext);
+  const [name, setName] = useState('');
+  const [columns, setColumns] = useState('');
 
   const handleClose = () => {
     setOpen(false);
   };
 
+  const colors = [
+    '#3E3F4E',
+    '#2B2C37',
+    '#828FA3',
+    '#E4EBFA',
+    '#F4F7FD',
+    '#FFFFFF',
+    '#EA5555',
+    '#FF9898',
+    '#635FC7',
+    '#A8A4FF',
+    '#000112',
+    '#20212C',
+  ];
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const randomColorIndex = Math.floor(Math.random() * colors.length);
+    const randomColor = colors[randomColorIndex];
+
+    const data = {
+      name,
+      columns: { name: columns, color: randomColor },
+    };
+    try {
+      await fetch('/api/boards', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const textColor = mode === 'light' ? 'black' : 'white';
-  const selectColor = mode === 'light' ? '#F4F7FD' : '#20212C';
+  // const selectColor = mode === 'light' ? '#F4F7FD' : '#20212C';
   const border = mode === 'light' ? null : 1;
   const borderColor = mode === 'light' ? '#F4F7FD' : '#828FA3';
 
@@ -34,7 +71,7 @@ export function AddBoardForm(props: SimpleDialogProps) {
           Add New Board
         </Typography>
 
-        <form className='space-y-5'>
+        <form onSubmit={handleSubmit} className='space-y-5'>
           <FormControl fullWidth className='space-y-3'>
             <Typography variant='body2'>Name</Typography>
             <TextField
@@ -43,13 +80,13 @@ export function AddBoardForm(props: SimpleDialogProps) {
                 border: border,
                 borderColor: borderColor,
               }}
-              id='title'
-              name='title'
+              id='name'
+              name='name'
               placeholder='e.g. Take coffee break'
               hiddenLabel
-              //   value={values.first_name}
+              value={name}
               //   onBlur={handleBlur}
-              //   onChange={handleChange}
+              onChange={(e) => setName(e.target.value)}
               //   error={errors.first_name && touched.first_name}
             />
           </FormControl>
@@ -68,9 +105,9 @@ export function AddBoardForm(props: SimpleDialogProps) {
                   border: border,
                   borderColor: borderColor,
                 }}
-                //   value={values.first_name}
+                value={columns}
                 //   onBlur={handleBlur}
-                //   onChange={handleChange}
+                onChange={(e) => setColumns(e.target.value)}
                 //   error={errors.first_name && touched.first_name}
               />
               <div>
@@ -85,7 +122,10 @@ export function AddBoardForm(props: SimpleDialogProps) {
             </button>
           </FormControl>
 
-          <button className='px-4 w-full py-3 bg-Purple text-White rounded-full hover:opacity-60'>
+          <button
+            type='submit'
+            className='px-4 w-full py-3 bg-Purple text-White rounded-full hover:opacity-60'
+          >
             Create New Board
           </button>
         </form>

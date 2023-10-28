@@ -5,13 +5,25 @@ const { Schema } = mongoose;
 const boardSchema = new Schema(
   {
     name: { type: String, required: true },
-    columns: [String],
-    tasks: {
-      title: String,
-      disc: String,
-      subtacks: [{ completed: Boolean, task: String }],
-      status: { type: String, required: true },
-    },
+    columns: [
+      {
+        name: String,
+        color: String,
+        tasks: [
+          {
+            title: String,
+            description: String,
+            status: String,
+            subtasks: [
+              {
+                title: String,
+                isCompleted: Boolean,
+              },
+            ],
+          },
+        ],
+      },
+    ],
   },
   { timestamps: true }
 );
