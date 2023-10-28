@@ -2,14 +2,15 @@
 import { Typography } from '@mui/material';
 import React, { useContext, useState } from 'react';
 import { ThemeContext } from '@/hooks/ThemeContext';
-import { ColumnDetails } from './ColumnDetails';
 import useSWR from 'swr';
 import { fetcher } from '@/common/fetcher';
+import { ColumnDetails } from '@/components/columns/ColumnDetails';
 
-export default function ColumnList() {
+export default function ColumnList({ params }: { params: { id: string } }) {
   const { mode } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
-  const { data, error, isLoading } = useSWR('/api/boards', fetcher);
+  const { id } = params;
+  const { data, error, isLoading } = useSWR(`/api/boards/${id}`, fetcher);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -19,31 +20,27 @@ export default function ColumnList() {
     setOpen(false);
   };
 
-  const textColor = mode === 'light' ? 'black' : 'white';
-
   return (
     <>
-      <div className='flex gap-5 w-screen'>
+      <div className='flex p-5 gap-5 w-screen'>
         <div className='flex gap-5'>
-          {data?.map((board: any) => (
-            <div key={board._id} className='space-y-5 [w-40%]'>
-              {board?.columns?.map((column: any) => (
-                <div key={column?._id}>
-                  <div className='flex gap-3 items-center'>
-                    <div
-                      style={{ backgroundColor: column?.color }}
-                      className='h-2 w-2 rounded-full'
-                    />
-                    <Typography
-                      variant='body2'
-                      sx={{ color: '#828FA3' }}
-                      className=' tracking-widest uppercase'
-                    >
-                      {column?.name} ({column?.tasks?.length || 0})
-                    </Typography>
-                  </div>
+          {data?.columns?.map((column: any) => (
+            <div key={column?._id} className='space-y-5'>
+              <div className='flex gap-3 items-center'>
+                <div
+                  style={{ backgroundColor: column?.color }}
+                  className='h-2 w-2 rounded-full'
+                />
+                <Typography
+                  variant='body2'
+                  sx={{ color: '#828FA3' }}
+                  className=' tracking-widest uppercase'
+                >
+                  {column?.name} ({column?.tasks?.length || 0})
+                </Typography>
+              </div>
 
-                  {/* <div onClick={handleClickOpen} className=' space-y-5'>
+              {/* <div onClick={handleClickOpen} className=' space-y-5'>
                     {column.todo.map((todo: any, i: number) => (
                       <div
                         key={i}
@@ -62,8 +59,6 @@ export default function ColumnList() {
                       </div>
                     ))}
                   </div> */}
-                </div>
-              ))}
             </div>
           ))}
         </div>

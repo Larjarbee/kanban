@@ -1,6 +1,12 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
-import { Typography, FormControl, TextField, IconButton } from '@mui/material';
+import {
+  Typography,
+  FormControl,
+  TextField,
+  IconButton,
+  CircularProgress,
+} from '@mui/material';
 import { ThemeContext } from '@/hooks/ThemeContext';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSWRConfig } from 'swr';
@@ -15,6 +21,7 @@ export function AddBoardForm(props: SimpleDialogProps) {
   const { onClose, open, setOpen } = props;
   const { mode } = React.useContext(ThemeContext);
   const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
   const [columns, setColumns] = useState('');
   const { mutate } = useSWRConfig();
 
@@ -47,11 +54,17 @@ export function AddBoardForm(props: SimpleDialogProps) {
       columns: { name: columns, color: randomColor },
     };
     try {
+      setLoading(true);
+
       await fetch('/api/boards', {
         method: 'POST',
         body: JSON.stringify(data),
       });
       mutate('/api/boards');
+
+      setLoading(false);
+      setName('');
+      setColumns('');
     } catch (err) {
       console.log(err);
     }
@@ -128,7 +141,11 @@ export function AddBoardForm(props: SimpleDialogProps) {
             type='submit'
             className='px-4 w-full py-3 bg-Purple text-White rounded-full hover:opacity-60'
           >
-            Create New Board
+            {loading ? (
+              <CircularProgress size={20} sx={{ color: 'white' }} />
+            ) : (
+              'Create New Board'
+            )}
           </button>
         </form>
       </div>

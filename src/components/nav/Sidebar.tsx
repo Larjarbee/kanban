@@ -13,13 +13,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ThemeContext } from '@/hooks/ThemeContext';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { DUMMY_COL } from '../columns/ColumnList';
 import { AddBoardForm } from '../board/AddBoardForm';
+import { fetcher } from '@/common/fetcher';
+import useSWR from 'swr';
 
 export default function Sidebar() {
   const pathname = usePathname();
   const { mode, toggle, toggleNav, handleToggle } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
+  const { data } = useSWR('/api/boards', fetcher);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -38,7 +40,10 @@ export default function Sidebar() {
           } fixed w-[20%] border-r-2 flex h-screen flex-col justify-between`}
         >
           <div className='space-y-8'>
-            <div className='flex gap-3 items-center justify-center py-5'>
+            <Link
+              href='/'
+              className='flex gap-3 items-center justify-center py-5'
+            >
               <Image src={logo} width={24} height={25} alt='logo' />
               <div
                 className={`${
@@ -49,27 +54,27 @@ export default function Sidebar() {
                   Kanban
                 </Typography>
               </div>
-            </div>
+            </Link>
 
             <div className='flex flex-col space-y-8 items-center text-MediumGrey'>
               <Typography variant='body1' className=' tracking-widest'>
-                ALL BOARDS ({DUMMY_COL.length})
+                ALL BOARDS ({data?.length || 0})
               </Typography>
 
               <div className='w-full pr-5'>
-                {links.map((link, i) => (
+                {data?.map((link: any) => (
                   <Link
-                    key={i}
+                    key={link?._id}
                     className={`link ${
-                      pathname === link.path
-                        ? 'flex items-center justify-center py-3 gap-3 text-White rounded-r-full bg-Purple'
+                      pathname === `/dashboard/${link?._id}`
+                        ? 'flex items-center pl-14 py-3 gap-3 text-White rounded-r-full bg-Purple'
                         : 'flex items-center pl-14 gap-3 py-3 hover:bg-PurpleLighter hover:text-Purple hover:rounded-r-full hover:transition-all'
                     }`}
-                    href={link.path}
+                    href={`/dashboard/${link?._id}`}
                   >
                     <div>
                       <Image
-                        src={pathname == link.path ? box1 : box}
+                        src={pathname == `/dashboard/${link?._id}` ? box1 : box}
                         width={16}
                         height={16}
                         alt='logo'
@@ -133,12 +138,6 @@ export default function Sidebar() {
     </>
   );
 }
-
-export const links = [
-  { name: 'Platform Launch', path: '/' },
-  { name: 'Marketing Plan', path: '#' },
-  { name: 'Roadmap', path: '#' },
-];
 
 export const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 30,

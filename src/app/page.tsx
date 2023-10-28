@@ -1,25 +1,26 @@
 import Button from '@/common/Button';
-import ColumnList from '@/components/columns/ColumnList';
-
+import Dashboard from '@/components/board/Dashboard';
+import getAllBoards from '@/lib/board/getAllBoards';
 import { Typography } from '@mui/material';
 
-export default function Home() {
-  const columns = false;
+export default async function Home() {
+  const columns = await getAllBoards();
+
   return (
-    <div className='p-5'>
-      {columns ? (
-        <div className='my-[25%] text-MediumGrey text-center space-y-5'>
-          <Typography variant='body1'>
-            This board is empty. Create a new column to get started.
-          </Typography>
-          <div className='w-[20%] mx-auto'>
-            <Button>+ Add New Column</Button>
+    <div className='p-5 h-screen'>
+      {columns.lenght == 0 ? (
+        <div>
+          <div className='my-[25%] text-MediumGrey text-center space-y-5'>
+            <Typography variant='body1'>
+              This board is empty. Create a new column to get started.
+            </Typography>
+            <div className='w-[20%] mx-auto'>
+              <Button>+ Add New Column</Button>
+            </div>
           </div>
         </div>
       ) : (
-        <div className=' overflow-auto ...'>
-          <ColumnList />
-        </div>
+        <Dashboard />
       )}
     </div>
   );

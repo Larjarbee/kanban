@@ -9,6 +9,9 @@ import { AddTaskForm } from '../task/AddTaskForm';
 import useMenu from '@/common/useMenu';
 import { EditBoardForm } from '../board/EditBoardForm';
 import { DeleteBoard } from '../board/DeleteBoard';
+import { fetcher } from '@/common/fetcher';
+import useSWR from 'swr';
+import Link from 'next/link';
 
 export default function Navbar() {
   const { mode, toggleNav } = useContext(ThemeContext);
@@ -16,6 +19,7 @@ export default function Navbar() {
   const [opens, setOpens] = useState(false);
   const [openEditBoard, setOpenEditBoard] = useState(false);
   const [openDeleteBoard, setOpenDeleteBoard] = useState(false);
+  const { data } = useSWR('/api/boards', fetcher);
 
   const handleClickOpen = () => {
     setOpens(true);
@@ -48,7 +52,8 @@ export default function Navbar() {
     <>
       <nav className='flex w-full justify-between'>
         {toggleNav === false ? (
-          <div
+          <Link
+            href='/'
             className={`flex w-[20%] gap-3 px-10 items-center justify-center border-b-2 border-r-2 ${
               mode === 'light' ? 'bg-White' : 'bg-DarkGrey border-Grey'
             }`}
@@ -63,7 +68,7 @@ export default function Navbar() {
                 Kanban
               </Typography>
             </div>
-          </div>
+          </Link>
         ) : null}
 
         <div
@@ -83,7 +88,7 @@ export default function Navbar() {
 
           <div className='flex items-center gap-3'>
             <button
-              // disabled={true}
+              disabled={data?.length === 0}
               onClick={handleClickOpen}
               className='px-4 py-3 bg-Purple text-White rounded-full hover:opacity-60 disabled:cursor-not-allowed disabled:opacity-70'
             >
