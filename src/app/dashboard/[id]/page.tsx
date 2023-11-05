@@ -22,7 +22,7 @@ export default function ColumnList({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <div className='flex p-5 gap-5 w-screen'>
+      <div className='flex p-5 gap-5 w-full'>
         <div className='flex gap-5'>
           {data?.columns?.map((column: any) => (
             <div key={column?._id} className='space-y-5'>

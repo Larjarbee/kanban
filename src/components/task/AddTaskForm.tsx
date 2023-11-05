@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import {
   Typography,
@@ -7,9 +7,14 @@ import {
   MenuItem,
   TextField,
   IconButton,
+  CircularProgress,
 } from '@mui/material';
 import { ThemeContext } from '@/hooks/ThemeContext';
 import CloseIcon from '@mui/icons-material/Close';
+import { useSWRConfig } from 'swr';
+import { fetcher } from '@/common/fetcher';
+import useSWR from 'swr';
+import { useParams } from 'next/navigation';
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -20,6 +25,35 @@ export interface SimpleDialogProps {
 export function AddTaskForm(props: SimpleDialogProps) {
   const { onClose, open, setOpen } = props;
   const { mode } = React.useContext(ThemeContext);
+  const { mutate } = useSWRConfig();
+  const [loading, setLoading] = useState(false);
+  const [inputValues, setInputValues] = useState(['']);
+  const [title, setTitle] = useState('');
+  const [desc, setDesc] = useState('');
+  const [status, setStatus] = useState('');
+  const params = useParams();
+
+  const { data } = useSWR(`/api/boards/${params.id}`, fetcher);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const newInputValues = [...inputValues];
+    newInputValues[index] = e.target.value;
+    setInputValues(newInputValues);
+  };
+
+  const handleAddInput = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const newInputValues = [...inputValues, ''];
+    setInputValues(newInputValues);
+  };
+
+  const handleRemoveInput = (index: number) => {
+    const newInputValues = inputValues.filter((_, i) => i !== index);
+    setInputValues(newInputValues);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -29,6 +63,39 @@ export function AddTaskForm(props: SimpleDialogProps) {
   const selectColor = mode === 'light' ? '#F4F7FD' : '#20212C';
   const border = mode === 'light' ? null : 1;
   const borderColor = mode === 'light' ? '#F4F7FD' : '#828FA3';
+
+  const submitTaskHHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = {
+      tasks: [
+        {
+          title,
+          description: desc,
+          status,
+          subtasks: inputValues.map((value) => {
+            return { title: value, isCompleted: false };
+          }),
+        },
+      ],
+    };
+    try {
+      setLoading(true);
+
+      const res = await fetch('/api/tasks', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        throw new Error('Failed to update topic');
+      }
+      mutate('/api/tasks');
+
+      setLoading(false);
+      // setName('');
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <Dialog onClose={handleClose} open={open}>
@@ -41,7 +108,7 @@ export function AddTaskForm(props: SimpleDialogProps) {
           Add New Task
         </Typography>
 
-        <form className='space-y-5'>
+        <form onSubmit={submitTaskHHandler} className='space-y-5'>
           <FormControl fullWidth className='space-y-3'>
             <Typography variant='body2'>Title</Typography>
             <TextField
@@ -54,9 +121,9 @@ export function AddTaskForm(props: SimpleDialogProps) {
               name='title'
               placeholder='e.g. Take coffee break'
               hiddenLabel
-              //   value={values.first_name}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               //   onBlur={handleBlur}
-              //   onChange={handleChange}
               //   error={errors.first_name && touched.first_name}
             />
           </FormControl>
@@ -75,40 +142,51 @@ export function AddTaskForm(props: SimpleDialogProps) {
                 border: border,
                 borderColor: borderColor,
               }}
-              //   value={values.first_name}
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
               //   onBlur={handleBlur}
-              //   onChange={handleChange}
               //   error={errors.first_name && touched.first_name}
             />
           </FormControl>
 
           <FormControl fullWidth className='space-y-3'>
             <Typography variant='body2'>Subtasks</Typography>
-            <div className='flex items-center gap-3'>
-              <TextField
-                id='subtasks'
-                name='subtasks'
-                placeholder='e.g. Make coffee'
-                hiddenLabel
-                fullWidth
-                sx={{
-                  color: textColor,
-                  border: border,
-                  borderColor: borderColor,
-                }}
-                //   value={values.first_name}
-                //   onBlur={handleBlur}
-                //   onChange={handleChange}
-                //   error={errors.first_name && touched.first_name}
-              />
-              <div>
-                <IconButton sx={{ color: '#828FA3' }}>
-                  <CloseIcon />
-                </IconButton>
+            {inputValues.map((value, index) => (
+              <div key={index} className='flex items-center gap-3'>
+                <TextField
+                  id='subtasks'
+                  name='subtasks'
+                  placeholder='e.g. Make coffee'
+                  hiddenLabel
+                  fullWidth
+                  sx={{
+                    color: textColor,
+                    border: border,
+                    borderColor: borderColor,
+                  }}
+                  value={value}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    handleInputChange(e, index)
+                  }
+                  //   onBlur={handleBlur}
+                  //   error={errors.first_name && touched.first_name}
+                />
+                <div>
+                  <IconButton
+                    sx={{ color: '#828FA3' }}
+                    onClick={() => handleRemoveInput(index)}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </div>
               </div>
-            </div>
+            ))}
 
-            <button className='px-4 w-full py-3 bg-PurpleLighter text-Purple rounded-full hover:opacity-60'>
+            <button
+              type='button'
+              onClick={handleAddInput}
+              className='px-4 w-full py-3 bg-PurpleLighter text-Purple rounded-full hover:opacity-60'
+            >
               + Add New Subtask
             </button>
           </FormControl>
@@ -120,8 +198,8 @@ export function AddTaskForm(props: SimpleDialogProps) {
 
             <FormControl fullWidth>
               <Select
-                // value={age}
-                // onChange={handleChange}
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
                 sx={{
                   color: textColor,
                   border: border,
@@ -143,20 +221,27 @@ export function AddTaskForm(props: SimpleDialogProps) {
                   },
                 }}
               >
-                <MenuItem value='' sx={{ color: textColor }}>
-                  Todo
-                </MenuItem>
-                <MenuItem value='' sx={{ color: textColor }}>
-                  Doing
-                </MenuItem>
-                <MenuItem value='' sx={{ color: textColor }}>
-                  Done
-                </MenuItem>
+                {data?.columns?.map((item: any) => (
+                  <MenuItem
+                    key={item?._id}
+                    value={item?.name}
+                    sx={{ color: textColor }}
+                  >
+                    {item?.name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </div>
-          <button className='px-4 w-full py-3 bg-Purple text-White rounded-full hover:opacity-60'>
-            Create Task
+          <button
+            type='submit'
+            className='px-4 w-full py-3 bg-Purple text-White rounded-full hover:opacity-60'
+          >
+            {loading ? (
+              <CircularProgress size={20} sx={{ color: 'white' }} />
+            ) : (
+              'Create Task'
+            )}
           </button>
         </form>
       </div>

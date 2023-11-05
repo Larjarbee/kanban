@@ -136,6 +136,7 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
+
       <AddTaskForm open={opens} onClose={handleClose} setOpen={setOpens} />
       <EditBoardForm
         open={openEditBoard}

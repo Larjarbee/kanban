@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import {
   Typography,
@@ -22,8 +22,28 @@ export function AddBoardForm(props: SimpleDialogProps) {
   const { mode } = React.useContext(ThemeContext);
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
-  const [columns, setColumns] = useState('');
+  const [inputValues, setInputValues] = useState<string[]>(['']);
   const { mutate } = useSWRConfig();
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const newInputValues = [...inputValues];
+    newInputValues[index] = e.target.value;
+    setInputValues(newInputValues);
+  };
+
+  const handleAddInput = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const newInputValues = [...inputValues, ''];
+    setInputValues(newInputValues);
+  };
+
+  const handleRemoveInput = (index: number) => {
+    const newInputValues = inputValues.filter((_, i) => i !== index);
+    setInputValues(newInputValues);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -51,8 +71,11 @@ export function AddBoardForm(props: SimpleDialogProps) {
 
     const data = {
       name,
-      columns: { name: columns, color: randomColor },
+      columns: inputValues.map((value) => {
+        return { name: value, color: randomColor };
+      }),
     };
+
     try {
       setLoading(true);
 
@@ -64,7 +87,6 @@ export function AddBoardForm(props: SimpleDialogProps) {
 
       setLoading(false);
       setName('');
-      setColumns('');
     } catch (err) {
       console.log(err);
     }
@@ -108,31 +130,42 @@ export function AddBoardForm(props: SimpleDialogProps) {
 
           <FormControl fullWidth className='space-y-3'>
             <Typography variant='body2'>Columns</Typography>
-            <div className='flex items-center gap-3'>
-              <TextField
-                id='column'
-                name='column'
-                placeholder='e.g. Make coffee'
-                hiddenLabel
-                fullWidth
-                sx={{
-                  color: textColor,
-                  border: border,
-                  borderColor: borderColor,
-                }}
-                value={columns}
-                //   onBlur={handleBlur}
-                onChange={(e) => setColumns(e.target.value)}
-                //   error={errors.first_name && touched.first_name}
-              />
-              <div>
-                <IconButton sx={{ color: '#828FA3' }}>
-                  <CloseIcon />
-                </IconButton>
+            {inputValues.map((value, index) => (
+              <div key={index} className='flex items-center gap-3'>
+                <TextField
+                  id='column'
+                  name='column'
+                  placeholder='e.g. Make coffee'
+                  hiddenLabel
+                  fullWidth
+                  sx={{
+                    color: textColor,
+                    border: border,
+                    borderColor: borderColor,
+                  }}
+                  value={value}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    handleInputChange(e, index)
+                  }
+                  //   onBlur={handleBlur}
+                  //   error={errors.first_name && touched.first_name}
+                />
+                <div>
+                  <IconButton
+                    sx={{ color: '#828FA3' }}
+                    onClick={() => handleRemoveInput(index)}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </div>
               </div>
-            </div>
+            ))}
 
-            <button className='px-4 w-full py-3 bg-PurpleLighter text-Purple rounded-full hover:opacity-60'>
+            <button
+              type='button'
+              onClick={handleAddInput}
+              className='px-4 w-full py-3 bg-PurpleLighter text-Purple rounded-full hover:opacity-60'
+            >
               + Add New Column
             </button>
           </FormControl>
@@ -152,18 +185,3 @@ export function AddBoardForm(props: SimpleDialogProps) {
     </Dialog>
   );
 }
-
-export const substasks = [
-  {
-    task: 'Research competitor pricing and business models',
-    completed: true,
-  },
-  {
-    task: 'Outline a business model that works for our solution',
-    completed: true,
-  },
-  {
-    task: 'Talk to potential customers about our proposed solution and ask for fair price expectancy',
-    completed: false,
-  },
-];

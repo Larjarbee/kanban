@@ -2,10 +2,7 @@ import { NextResponse } from 'next/server';
 import connect from '@/utilis/db';
 import Boards from '@/models/Boards';
 
-export const GET = async (
-  request: any,
-  { params }: { params: { id: string } }
-) => {
+export const GET = async (request: any, { params }: Params) => {
   const { id } = params;
 
   try {
@@ -19,10 +16,7 @@ export const GET = async (
   }
 };
 
-export const DELETE = async (
-  request: any,
-  { params }: { params: { id: string } }
-) => {
+export const DELETE = async (request: any, { params }: Params) => {
   const { id } = params;
 
   try {

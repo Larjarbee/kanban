@@ -4,24 +4,11 @@ const { Schema } = mongoose;
 
 const boardSchema = new Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     columns: [
       {
         name: String,
         color: String,
-        tasks: [
-          {
-            title: String,
-            description: String,
-            status: String,
-            subtasks: [
-              {
-                title: String,
-                isCompleted: Boolean,
-              },
-            ],
-          },
-        ],
       },
     ],
   },
