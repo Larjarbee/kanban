@@ -1,8 +1,8 @@
 import { colors } from '@/common/colors';
 import { grey } from '@mui/material/colors';
-import { Plus_Jakarta_Sans } from 'next/font/google';
+import { Inter } from 'next/font/google';
 
-const jakarta = Plus_Jakarta_Sans({
+const jakarta = Inter({
   weight: ['200', '300', '400', '500', '600', '700', '800'],
   subsets: ['latin'],
 });

@@ -1,6 +1,6 @@
 import ThemeConfig from '@/configs/themeConfigs/ThemeConfig';
 import * as React from 'react';
-import { Plus_Jakarta_Sans } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import Sidebar from '@/components/nav/Sidebar';
 import Navbar from '@/components/nav/Navbar';
 import { ThemeProvider } from '@/hooks/ThemeContext';
@@ -8,7 +8,7 @@ import ContainerWrapper from '@/common/ContainerWrapper';
 import './globals.css';
 import HomeWrapper from '@/common/HomeWrapper';
 
-const jakarta = Plus_Jakarta_Sans({
+const jakarta = Inter({
   weight: ['200', '300', '400', '500', '600', '700', '800'],
   subsets: ['latin'],
 });
@@ -29,7 +29,7 @@ export default function RootLayout({
         <ThemeConfig>
           <ThemeProvider>
             <ContainerWrapper>
-              <div>
+              <div className='flex-1'>
                 <Sidebar />
               </div>
               <HomeWrapper>
