@@ -1,11 +1,13 @@
 import { colors } from '@/common/colors';
 import { grey } from '@mui/material/colors';
-import { Inter } from 'next/font/google';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 
-const jakarta = Inter({
+const jakarta = Plus_Jakarta_Sans({
   weight: ['200', '300', '400', '500', '600', '700', '800'],
   subsets: ['latin'],
+  preload: false,
 });
+
 export const getThemeConfig = (mode: any) => ({
   palette: {
     mode,

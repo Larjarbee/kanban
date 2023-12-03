@@ -11,6 +11,9 @@ export default function ColumnList({ params }: { params: { id: string } }) {
   const [open, setOpen] = useState(false);
   const { id } = params;
   const { data, error, isLoading } = useSWR(`/api/boards/${id}`, fetcher);
+  const { data: tasks } = useSWR('/api/tasks', fetcher);
+
+  const filteredTasks = tasks?.filter((task: any) => task?.boardId === id);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -25,7 +28,7 @@ export default function ColumnList({ params }: { params: { id: string } }) {
       <div className='w-full flex p-5 gap-5 overflow-auto'>
         <div className='flex gap-5'>
           {data?.columns?.map((column: any) => (
-            <div key={column?._id} className='space-y-5'>
+            <div key={column?._id} className='space-y-5 w-[35%]'>
               <div className='flex gap-3 items-center'>
                 <div
                   style={{ backgroundColor: column?.color }}
@@ -36,29 +39,37 @@ export default function ColumnList({ params }: { params: { id: string } }) {
                   sx={{ color: '#828FA3' }}
                   className=' tracking-widest uppercase'
                 >
-                  {column?.name} ({column?.tasks?.length || 0})
+                  {column?.name} (
+                  {filteredTasks?.filter(
+                    (filteredTask: any) =>
+                      filteredTask?.columnId === column?._id
+                  )?.length || 0}
+                  )
                 </Typography>
               </div>
 
-              {/* <div onClick={handleClickOpen} className=' space-y-5'>
-                    {column.todo.map((todo: any, i: number) => (
-                      <div
-                        key={i}
-                        className={`${
-                          mode === 'light' ? 'bg-White' : 'bg-DarkGrey'
-                        } shadow-md p-5 rounded-xl space-y-2 hover:bg-PurpleLighter`}
-                      >
-                        <Typography variant='body2' sx={{ color: textColor }}>
-                          {todo.title}
-                        </Typography>
+              <div onClick={handleClickOpen} className=' space-y-5'>
+                {filteredTasks
+                  ?.filter(
+                    (filteredTask: any) =>
+                      filteredTask?.columnId === column?._id
+                  )
+                  ?.map((task: any) => (
+                    <div
+                      key={task?._id}
+                      className={`${
+                        mode === 'light' ? 'bg-White' : 'bg-DarkGrey text-White'
+                      } shadow-md p-5 rounded-xl space-y-2 hover:bg-[#625fc70c] hover:cursor-pointer`}
+                    >
+                      <Typography variant='body2'>{task?.title}</Typography>
 
-                        <Typography variant='body2' sx={{ color: '#828FA3' }}>
-                          {countCompletedSubtasks(todo.substasks)} of{' '}
-                          {todo.substasks.length} substasks
-                        </Typography>
-                      </div>
-                    ))}
-                  </div> */}
+                      <Typography variant='body2' sx={{ color: '#828FA3' }}>
+                        {countCompletedSubtasks(task?.subtasks)} of{' '}
+                        {task?.subtasks?.length} substasks
+                      </Typography>
+                    </div>
+                  ))}
+              </div>
             </div>
           ))}
         </div>

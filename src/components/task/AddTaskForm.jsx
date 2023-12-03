@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import {
   Typography,
@@ -16,13 +16,7 @@ import { fetcher } from '@/common/fetcher';
 import useSWR from 'swr';
 import { useParams } from 'next/navigation';
 
-export interface SimpleDialogProps {
-  open: boolean;
-  setOpen: (value: boolean) => void;
-  onClose: (value: string) => void;
-}
-
-export function AddTaskForm(props: SimpleDialogProps) {
+export function AddTaskForm(props) {
   const { onClose, open, setOpen } = props;
   const { mode } = React.useContext(ThemeContext);
   const { mutate } = useSWRConfig();
@@ -30,27 +24,24 @@ export function AddTaskForm(props: SimpleDialogProps) {
   const [inputValues, setInputValues] = useState(['']);
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState({});
   const params = useParams();
 
   const { data } = useSWR(`/api/boards/${params.id}`, fetcher);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
+  const handleInputChange = (e, index) => {
     const newInputValues = [...inputValues];
     newInputValues[index] = e.target.value;
     setInputValues(newInputValues);
   };
 
-  const handleAddInput = (e: { preventDefault: () => void }) => {
+  const handleAddInput = (e) => {
     e.preventDefault();
     const newInputValues = [...inputValues, ''];
     setInputValues(newInputValues);
   };
 
-  const handleRemoveInput = (index: number) => {
+  const handleRemoveInput = (index) => {
     const newInputValues = inputValues.filter((_, i) => i !== index);
     setInputValues(newInputValues);
   };
@@ -64,19 +55,17 @@ export function AddTaskForm(props: SimpleDialogProps) {
   const border = mode === 'light' ? null : 1;
   const borderColor = mode === 'light' ? '#F4F7FD' : '#828FA3';
 
-  const submitTaskHHandler = async (e: FormEvent<HTMLFormElement>) => {
+  const submitTaskHHandler = async (e) => {
     e.preventDefault();
     const data = {
-      tasks: [
-        {
-          title,
-          description: desc,
-          status,
-          subtasks: inputValues.map((value) => {
-            return { title: value, isCompleted: false };
-          }),
-        },
-      ],
+      boardId: params.id,
+      columnId: status._id,
+      status: status.name,
+      title,
+      description: desc,
+      subtasks: inputValues.map((value) => {
+        return { title: value, isCompleted: false };
+      }),
     };
     try {
       setLoading(true);
@@ -91,7 +80,10 @@ export function AddTaskForm(props: SimpleDialogProps) {
       mutate('/api/tasks');
 
       setLoading(false);
-      // setName('');
+      setInputValues(['']);
+      setTitle('');
+      setDesc('');
+      setStatus({});
     } catch (err) {
       console.log(err);
     }
@@ -165,9 +157,7 @@ export function AddTaskForm(props: SimpleDialogProps) {
                     borderColor: borderColor,
                   }}
                   value={value}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange(e, index)
-                  }
+                  onChange={(e) => handleInputChange(e, index)}
                   //   onBlur={handleBlur}
                   //   error={errors.first_name && touched.first_name}
                 />
@@ -221,10 +211,10 @@ export function AddTaskForm(props: SimpleDialogProps) {
                   },
                 }}
               >
-                {data?.columns?.map((item: any) => (
+                {data?.columns?.map((item) => (
                   <MenuItem
                     key={item?._id}
-                    value={item?.name}
+                    value={item}
                     sx={{ color: textColor }}
                   >
                     {item?.name}

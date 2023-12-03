@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/common/fetcher.js"
+    "src/common/fetcher.js",
+    "src/components/task/AddTaskForm.jsx"
   ],
   "exclude": ["node_modules"]
 }

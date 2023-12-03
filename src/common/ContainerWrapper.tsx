@@ -11,7 +11,9 @@ export default function ContainerWrapper({
   const { mode } = useContext(ThemeContext);
   return (
     <div
-      className={`${mode === 'light' ? 'bg-LighterGrey' : 'bg-VeryDarkGrey'}`}
+      className={`${
+        mode === 'light' ? 'bg-LighterGrey' : 'bg-VeryDarkGrey'
+      } w-full`}
     >
       {children}
     </div>

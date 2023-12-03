@@ -16,12 +16,10 @@ export const GET = async (req: any) => {
 export const POST = async (request: any) => {
   const body = await request.json();
 
-  const newBoards = new Boards(body);
-
   try {
     await connect();
 
-    await newBoards.save();
+    await Boards.create(body);
 
     return new NextResponse('Board has been created', { status: 201 });
   } catch (err) {

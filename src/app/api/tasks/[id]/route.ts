@@ -2,10 +2,13 @@ import { NextResponse } from 'next/server';
 import connect from '@/utilis/db';
 import Tasks from '@/models/Tasks';
 
-export const GET = async (request: Request) => {
+export const GET = async (request: any, { params }: Params) => {
+  const { id } = params;
+
   try {
     await connect();
-    const tasks = await Tasks.find();
+
+    const tasks = await Tasks.findById(id);
 
     return new NextResponse(JSON.stringify(tasks), { status: 200 });
   } catch (err) {
@@ -13,7 +16,7 @@ export const GET = async (request: Request) => {
   }
 };
 
-export const POST = async (request: Request) => {
+export const POST = async (request: any) => {
   const body = await request.json();
 
   try {

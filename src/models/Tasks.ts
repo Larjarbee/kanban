@@ -4,9 +4,11 @@ const { Schema } = mongoose;
 
 const taskSchema = new Schema(
   {
+    boardId: String,
+    columnId: String,
+    status: String,
     title: String,
     description: String,
-    status: String,
     subtasks: [
       {
         title: String,
@@ -17,4 +19,4 @@ const taskSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.models.Tasks || mongoose.model('Tasks', taskSchema);
+export default mongoose.models.tasks || mongoose.model('tasks', taskSchema);

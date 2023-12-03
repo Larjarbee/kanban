@@ -9,7 +9,7 @@ export default function HomeWrapper({
 }) {
   const { toggleNav } = useContext(ThemeContext);
   return (
-    <div className={`${toggleNav === false ? 'ml-0' : 'ml-[20%]'}`}>
+    <div className={`${toggleNav === false ? 'ml-0' : 'ml-[20%]'} w-[80%]`}>
       {children}
     </div>
   );
