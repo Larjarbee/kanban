@@ -5,30 +5,35 @@ import { ThemeContext } from '@/hooks/ThemeContext';
 import useSWR from 'swr';
 import { fetcher } from '@/common/fetcher';
 import { ColumnDetails } from '@/components/columns/ColumnDetails';
+import Loading from '@/common/Loading';
 
-export default function ColumnList({ params }: { params: { id: string } }) {
+export default function ColumnList({ params }) {
   const { mode } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
+  // const [columnId, setColumnId] = useState('');
   const { id } = params;
   const { data, error, isLoading } = useSWR(`/api/boards/${id}`, fetcher);
   const { data: tasks } = useSWR('/api/tasks', fetcher);
 
-  const filteredTasks = tasks?.filter((task: any) => task?.boardId === id);
+  const filteredTasks = tasks?.filter((task) => task?.boardId === id);
 
   const handleClickOpen = () => {
     setOpen(true);
+    // setColumnId(id);
   };
 
-  const handleClose = (value: string) => {
+  const handleClose = (value) => {
     setOpen(false);
   };
 
   return (
     <>
-      <div className='w-full flex p-5 gap-5 overflow-auto'>
-        <div className='flex gap-5'>
-          {data?.columns?.map((column: any) => (
-            <div key={column?._id} className='space-y-5 w-[35%]'>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className='h-screen flex p-5 gap-5'>
+          {data?.columns?.map((column) => (
+            <div key={column?._id} className='space-y-5 w-[25%]'>
               <div className='flex gap-3 items-center'>
                 <div
                   style={{ backgroundColor: column?.color }}
@@ -41,27 +46,30 @@ export default function ColumnList({ params }: { params: { id: string } }) {
                 >
                   {column?.name} (
                   {filteredTasks?.filter(
-                    (filteredTask: any) =>
-                      filteredTask?.columnId === column?._id
+                    (filteredTask) => filteredTask?.columnId === column?._id
                   )?.length || 0}
                   )
                 </Typography>
               </div>
 
-              <div onClick={handleClickOpen} className=' space-y-5'>
+              <div className=' space-y-5'>
                 {filteredTasks
                   ?.filter(
-                    (filteredTask: any) =>
-                      filteredTask?.columnId === column?._id
+                    (filteredTask) => filteredTask?.columnId === column?._id
                   )
-                  ?.map((task: any) => (
+                  ?.map((task) => (
                     <div
                       key={task?._id}
                       className={`${
                         mode === 'light' ? 'bg-White' : 'bg-DarkGrey text-White'
                       } shadow-md p-5 rounded-xl space-y-2 hover:bg-[#625fc70c] hover:cursor-pointer`}
                     >
-                      <Typography variant='body2'>{task?.title}</Typography>
+                      <Typography
+                        // onClick={handleClickOpen(task?.columnId)}
+                        variant='body2'
+                      >
+                        {task?.title}
+                      </Typography>
 
                       <Typography variant='body2' sx={{ color: '#828FA3' }}>
                         {countCompletedSubtasks(task?.subtasks)} of{' '}
@@ -72,17 +80,26 @@ export default function ColumnList({ params }: { params: { id: string } }) {
               </div>
             </div>
           ))}
-        </div>
 
-        <div
-          className={`${
-            mode === 'light' ? 'bg-LightGrey' : 'bg-VeryLightGrey'
-          } text-MediumGrey px-10 flex items-center justify-center h-screen rounded-lg`}
-        >
-          <Typography variant='body1'>+ New Column</Typography>
+          <div
+            className={`${
+              mode === 'light' ? 'bg-LightGrey' : 'bg-VeryLightGrey'
+            } text-MediumGrey px-10 flex flex-col items-center justify-between rounded-lg`}
+          >
+            <div className='flex-1' />
+            <button className='px-3 py-1 bg-inherit rounded-xl hover:bg-PurpleLighter'>
+              +New Column
+            </button>
+            <div className='flex-1' />
+          </div>
         </div>
-      </div>
-      <ColumnDetails opens={open} onClose={handleClose} setOpen={setOpen} />
+      )}
+      <ColumnDetails
+        opens={open}
+        // columnId={columnId}
+        onClose={handleClose}
+        setOpen={setOpen}
+      />
     </>
   );
 }
@@ -269,7 +286,7 @@ export const DUMMY_COL = [
   // },
 ];
 
-export function countCompletedSubtasks(data: any) {
+export function countCompletedSubtasks(data) {
   let count = 0;
 
   if (Array.isArray(data)) {

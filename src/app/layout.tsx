@@ -33,7 +33,7 @@ export default function RootLayout({
               <Sidebar />
               <HomeWrapper>
                 <Navbar />
-                {children}
+                <main className='w-full overflow-auto'>{children}</main>
               </HomeWrapper>
             </ContainerWrapper>
           </ThemeProvider>

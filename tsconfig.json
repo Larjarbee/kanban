@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/common/fetcher.js",
-    "src/components/task/AddTaskForm.jsx"
+    "src/components/task/AddTaskForm.jsx",
+    "src/app/dashboard/[id]/page.jsx"
   ],
   "exclude": ["node_modules"]
 }

@@ -14,19 +14,25 @@ import { ThemeContext } from '@/hooks/ThemeContext';
 import useMenu from '@/common/useMenu';
 import { EditTaskForm } from '../task/EditTaskForm';
 import { DeleteTask } from '../task/DeleteTask';
+import useSWR from 'swr';
+import { fetcher } from '@/common/fetcher';
 
 export interface SimpleDialogProps {
   opens: boolean;
   setOpen: (value: boolean) => void;
   onClose: (value: string) => void;
+  columnId: string;
 }
 
 export function ColumnDetails(props: SimpleDialogProps) {
-  const { onClose, opens, setOpen } = props;
+  const { data } = useSWR('/api/tasks', fetcher);
+  const { onClose, opens, setOpen, columnId } = props;
   const { mode } = useContext(ThemeContext);
   const { open, anchorEl, handleClick, handleCloses } = useMenu();
   const [openEditTask, setOpenEditTask] = useState(false);
   const [openDeleteTask, setOpenDeleteTask] = useState(false);
+
+  const task = data?.find((el: any) => el?.columnId === columnId);
 
   const handleClickOpenEditTask = () => {
     setOpenEditTask(true);
@@ -64,8 +70,7 @@ export function ColumnDetails(props: SimpleDialogProps) {
             variant='body1'
             sx={{ color: textColor, fontWeight: 900 }}
           >
-            Research pricing points of various competitors and trial different
-            business models
+            {task?.title}
           </Typography>
 
           <div>
@@ -118,9 +123,7 @@ export function ColumnDetails(props: SimpleDialogProps) {
         />
 
         <Typography variant='body2' sx={{ color: '#828FA3' }}>
-          We know what we're planning to build for version one. Now we need to
-          finalise the first pricing model we'll use. Keep iterating the
-          subtasks until we have a coherent proposition.
+          {task?.description}
         </Typography>
 
         <div

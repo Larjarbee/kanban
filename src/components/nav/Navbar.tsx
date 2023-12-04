@@ -50,11 +50,15 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className='flex w-full justify-between'>
+      <nav
+        className={`${
+          toggleNav === false ? 'w-screen' : 'w-full'
+        } flex justify-between`}
+      >
         {toggleNav === false ? (
           <Link
             href='/'
-            className={`flex w-[20%] gap-3 px-10 items-center justify-center border-b-2 border-r-2 ${
+            className={`flex w-[25%] gap-3 px-10 items-center justify-center border-b-2 border-r-2 ${
               mode === 'light' ? 'bg-White' : 'bg-DarkGrey border-Grey'
             }`}
           >
@@ -74,9 +78,7 @@ export default function Navbar() {
         <div
           className={`${
             mode === 'light' ? 'bg-White' : 'bg-DarkGrey border-Grey'
-          } flex justify-between ${
-            toggleNav === false ? 'w-[80%]' : 'w-full'
-          } p-5 border-b-2 items-center`}
+          } flex justify-between w-full p-5 border-b-2 items-center`}
         >
           <div
             className={`${
