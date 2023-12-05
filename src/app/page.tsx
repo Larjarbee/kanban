@@ -1,4 +1,3 @@
-import Button from '@/common/Button';
 import Dashboard from '@/components/board/Dashboard';
 import getAllBoards from '@/lib/board/getAllBoards';
 import { Typography } from '@mui/material';
@@ -15,7 +14,9 @@ export default async function Home() {
               This board is empty. Create a new column to get started.
             </Typography>
             <div className='w-[20%] mx-auto'>
-              <Button>+ Add New Column</Button>
+              <button className='px-4 py-2 bg-Purple text-White rounded-full hover:opacity-60'>
+                + Add New Column
+              </button>
             </div>
           </div>
         </div>

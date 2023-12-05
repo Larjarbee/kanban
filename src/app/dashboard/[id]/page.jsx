@@ -7,19 +7,23 @@ import { fetcher } from '@/common/fetcher';
 import { ColumnDetails } from '@/components/columns/ColumnDetails';
 import Loading from '@/common/Loading';
 import { countCompletedSubtasks } from '@/common/subtaskCount';
+import { AddColumnForm } from '@/components/board/AddColumnForm';
 
 export default function ColumnList({ params }) {
   const { mode } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
+  const [opens, setOpens] = useState(false);
   const [columnId, setColumnId] = useState('');
   const { id } = params;
-  const { data, error, isLoading } = useSWR(`/api/boards/${id}`, fetcher);
+  const { data, isLoading } = useSWR(`/api/boards/${id}`, fetcher);
   const { data: tasks } = useSWR('/api/tasks', fetcher);
 
-  console.log(columnId);
-
-  const handleClose = (value) => {
+  const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleColumnClose = () => {
+    setOpens(false);
   };
 
   return (
@@ -87,7 +91,10 @@ export default function ColumnList({ params }) {
             } text-MediumGrey px-10 flex flex-col items-center justify-between rounded-lg`}
           >
             <div className='flex-1' />
-            <button className='px-3 py-1 bg-inherit rounded-xl hover:bg-PurpleLighter'>
+            <button
+              onClick={() => setOpens(true)}
+              className='px-3 py-1 bg-inherit rounded-xl hover:bg-PurpleLighter'
+            >
               +New Column
             </button>
             <div className='flex-1' />
@@ -99,6 +106,11 @@ export default function ColumnList({ params }) {
         columnId={columnId}
         onClose={handleClose}
         setOpen={setOpen}
+      />
+      <AddColumnForm
+        open={opens}
+        onClose={handleColumnClose}
+        setOpen={setOpens}
       />
     </>
   );
