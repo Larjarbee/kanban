@@ -105,7 +105,7 @@ export function AddTaskForm(props) {
             <Typography variant='body2'>Title</Typography>
             <TextField
               sx={{
-                color: textColor,
+                color: 'white',
                 border: border,
                 borderColor: borderColor,
               }}

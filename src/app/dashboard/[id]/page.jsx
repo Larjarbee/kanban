@@ -6,21 +6,17 @@ import useSWR from 'swr';
 import { fetcher } from '@/common/fetcher';
 import { ColumnDetails } from '@/components/columns/ColumnDetails';
 import Loading from '@/common/Loading';
+import { countCompletedSubtasks } from '@/common/subtaskCount';
 
 export default function ColumnList({ params }) {
   const { mode } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
-  // const [columnId, setColumnId] = useState('');
+  const [columnId, setColumnId] = useState('');
   const { id } = params;
   const { data, error, isLoading } = useSWR(`/api/boards/${id}`, fetcher);
   const { data: tasks } = useSWR('/api/tasks', fetcher);
 
-  const filteredTasks = tasks?.filter((task) => task?.boardId === id);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-    // setColumnId(id);
-  };
+  console.log(columnId);
 
   const handleClose = (value) => {
     setOpen(false);
@@ -45,7 +41,7 @@ export default function ColumnList({ params }) {
                   className=' tracking-widest uppercase'
                 >
                   {column?.name} (
-                  {filteredTasks?.filter(
+                  {tasks?.filter(
                     (filteredTask) => filteredTask?.columnId === column?._id
                   )?.length || 0}
                   )
@@ -53,7 +49,7 @@ export default function ColumnList({ params }) {
               </div>
 
               <div className=' space-y-5'>
-                {filteredTasks
+                {tasks
                   ?.filter(
                     (filteredTask) => filteredTask?.columnId === column?._id
                   )
@@ -65,8 +61,12 @@ export default function ColumnList({ params }) {
                       } shadow-md p-5 rounded-xl space-y-2 hover:bg-[#625fc70c] hover:cursor-pointer`}
                     >
                       <Typography
-                        // onClick={handleClickOpen(task?.columnId)}
+                        onClick={() => {
+                          setOpen(true);
+                          setColumnId(task?._id);
+                        }}
                         variant='body2'
+                        className='hover:underline'
                       >
                         {task?.title}
                       </Typography>
@@ -96,7 +96,7 @@ export default function ColumnList({ params }) {
       )}
       <ColumnDetails
         opens={open}
-        // columnId={columnId}
+        columnId={columnId}
         onClose={handleClose}
         setOpen={setOpen}
       />
@@ -285,17 +285,3 @@ export const DUMMY_COL = [
   //   ],
   // },
 ];
-
-export function countCompletedSubtasks(data) {
-  let count = 0;
-
-  if (Array.isArray(data)) {
-    data.forEach((subtask) => {
-      if (subtask.completed === true) {
-        count++;
-      }
-    });
-  }
-
-  return count;
-}

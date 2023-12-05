@@ -16,6 +16,7 @@ import { EditTaskForm } from '../task/EditTaskForm';
 import { DeleteTask } from '../task/DeleteTask';
 import useSWR from 'swr';
 import { fetcher } from '@/common/fetcher';
+import { countCompletedSubtasks } from '@/common/subtaskCount';
 
 export interface SimpleDialogProps {
   opens: boolean;
@@ -32,7 +33,7 @@ export function ColumnDetails(props: SimpleDialogProps) {
   const [openEditTask, setOpenEditTask] = useState(false);
   const [openDeleteTask, setOpenDeleteTask] = useState(false);
 
-  const task = data?.find((el: any) => el?.columnId === columnId);
+  const task = data?.find((el: any) => el?._id === columnId);
 
   const handleClickOpenEditTask = () => {
     setOpenEditTask(true);
@@ -54,9 +55,9 @@ export function ColumnDetails(props: SimpleDialogProps) {
     setOpen(false);
   };
 
-  const textColor = mode === 'light' ? 'black' : 'white';
+  const textColor = mode === 'light' ? 'text-Black' : 'text-White';
+  const typoTextColor = mode === 'light' ? 'black' : 'white';
   const selectColor = mode === 'light' ? '#F4F7FD' : '#20212C';
-  const borderColor = mode === 'light' ? '#F4F7FD' : '#828FA3';
 
   return (
     <Dialog onClose={handleClose} open={opens}>
@@ -68,7 +69,7 @@ export function ColumnDetails(props: SimpleDialogProps) {
         <div className='flex justify-between'>
           <Typography
             variant='body1'
-            sx={{ color: textColor, fontWeight: 900 }}
+            sx={{ color: typoTextColor, fontWeight: 900 }}
           >
             {task?.title}
           </Typography>
@@ -126,28 +127,27 @@ export function ColumnDetails(props: SimpleDialogProps) {
           {task?.description}
         </Typography>
 
-        <div
-          className={`${
-            mode === 'light' ? 'text-Black' : 'text-White'
-          } space-y-3`}
-        >
-          <Typography variant='body2'>Subtasks (2 of 3)</Typography>
+        <div className={`${textColor} space-y-3`}>
+          <Typography variant='body2'>
+            substasks {countCompletedSubtasks(task?.subtasks)} of{' '}
+            {task?.subtasks?.length}
+          </Typography>
           <div className='space-y-2'>
-            {substasks.map((task, index) => (
+            {task?.subtasks.map((subtask: any) => (
               <div
-                key={index}
+                key={subtask?._id}
                 className={`flex items-center gap-2 p-1 rounded-lg ${
                   mode === 'light' ? 'bg-LighterGrey' : 'bg-Black'
                 } hover:bg-PurpleLighter`}
               >
-                <Checkbox defaultChecked={task.completed} />
+                <Checkbox checked={subtask?.isCompleted} />
                 <Typography
                   variant='body2'
                   className={`${
-                    task.completed ? 'line-through text-MediumGrey' : null
+                    subtask?.isCompleted ? 'line-through text-MediumGrey' : null
                   }`}
                 >
-                  {task.task}
+                  {subtask?.title}
                 </Typography>
               </div>
             ))}
@@ -159,43 +159,9 @@ export function ColumnDetails(props: SimpleDialogProps) {
             Current Status
           </Typography>
 
-          <FormControl fullWidth>
-            <Select
-              // value={age}
-              // onChange={handleChange}
-              sx={{
-                color: textColor,
-                border: 1,
-                outline: 0,
-                borderColor: borderColor,
-              }}
-              displayEmpty
-              inputProps={{
-                'aria-label': 'Without label',
-              }}
-              MenuProps={{
-                PaperProps: {
-                  sx: {
-                    bgcolor: selectColor,
-
-                    '& .MuiMenuItem-root': {
-                      //   padding: 2,
-                    },
-                  },
-                },
-              }}
-            >
-              <MenuItem value='' sx={{ color: textColor }}>
-                Todo
-              </MenuItem>
-              <MenuItem value='' sx={{ color: textColor }}>
-                Doing
-              </MenuItem>
-              <MenuItem value='' sx={{ color: textColor }}>
-                Done
-              </MenuItem>
-            </Select>
-          </FormControl>
+          <div className={`${textColor} w-full py-3 border text-center`}>
+            <Typography>{task?.status}</Typography>
+          </div>
         </div>
       </div>
     </Dialog>

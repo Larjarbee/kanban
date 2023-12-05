@@ -8,9 +8,10 @@ export const GET = async (request: any, { params }: Params) => {
   try {
     await connect();
 
-    const tasks = await Tasks.findById(id);
+    const tasks = await Tasks.find();
+    const filteredTasks = tasks?.filter((task) => task?.boardId === id);
 
-    return new NextResponse(JSON.stringify(tasks), { status: 200 });
+    return new NextResponse(JSON.stringify(filteredTasks), { status: 200 });
   } catch (err) {
     return new NextResponse('Database Error', { status: 500 });
   }
