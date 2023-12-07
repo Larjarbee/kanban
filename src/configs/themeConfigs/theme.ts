@@ -1,5 +1,4 @@
 import { colors } from '@/common/colors';
-import { grey } from '@mui/material/colors';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 
 const jakarta = Plus_Jakarta_Sans({
@@ -12,26 +11,17 @@ export const getThemeConfig = (mode: any) => ({
   palette: {
     mode,
     primary: {
-      ...colors,
-      ...(mode === 'dark' && {
-        main: colors.main,
-      }),
+      main: colors.main,
     },
-    ...(mode === 'dark' && {
-      background: {
-        default: colors.main,
-        // paper: deepOrange[900],
-      },
-    }),
+
     text: {
       ...(mode === 'light'
         ? {
-            primary: grey[900],
-            secondary: grey[800],
+            primary: colors.Black,
           }
         : {
             primary: colors.White,
-            secondary: grey[500],
+            // secondary: grey[500],
           }),
     },
     // mode: 'light',
@@ -57,5 +47,16 @@ export const getThemeConfig = (mode: any) => ({
       fontWeight: 600,
     },
   },
-  components: {},
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        // InputLabelProps: { shrink: true },
+      },
+    },
+    MuiDialog: {
+      defaultProps: {
+        // maxWidth: 'xs',
+      },
+    },
+  },
 });

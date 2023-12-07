@@ -12,12 +12,10 @@ export default function ThemeConfig({
 }: {
   children: React.ReactNode;
 }) {
-  // const { mode } = useThemeToggle();
   const { mode } = useContext(ThemeContext);
 
   const theme = useMemo(() => createTheme(getThemeConfig(mode)), [mode]);
 
-  // const theme = createTheme(getThemeConfig(mode));
   return (
     <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
       <ThemeProvider theme={theme}>

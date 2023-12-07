@@ -104,8 +104,8 @@ export function AddTaskForm(props) {
           <FormControl fullWidth className='space-y-3'>
             <Typography variant='body2'>Title</Typography>
             <TextField
+              variant='outlined'
               sx={{
-                color: 'white',
                 border: border,
                 borderColor: borderColor,
               }}
