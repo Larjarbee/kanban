@@ -4,8 +4,6 @@ import {
   IconButton,
   Typography,
   Checkbox,
-  FormControl,
-  Select,
   MenuItem,
   Menu,
 } from '@mui/material';
@@ -61,18 +59,9 @@ export function ColumnDetails(props: SimpleDialogProps) {
 
   return (
     <Dialog onClose={handleClose} open={opens}>
-      <div
-        className={`${
-          mode === 'light' ? 'bg-White' : 'bg-VeryDarkGrey'
-        } p-10 space-y-8`}
-      >
+      <div className='p-10 space-y-8'>
         <div className='flex justify-between'>
-          <Typography
-            variant='body1'
-            sx={{ color: typoTextColor, fontWeight: 900 }}
-          >
-            {task?.title}
-          </Typography>
+          <Typography variant='body1'>{task?.title}</Typography>
 
           <div>
             <IconButton
@@ -121,6 +110,8 @@ export function ColumnDetails(props: SimpleDialogProps) {
           open={openDeleteTask}
           onClose={handleCloseDeleteTask}
           setOpen={setOpenDeleteTask}
+          setOpens={setOpen}
+          task={task}
         />
 
         <Typography variant='body2' sx={{ color: '#828FA3' }}>

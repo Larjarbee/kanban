@@ -50,11 +50,6 @@ export function AddTaskForm(props) {
     setOpen(false);
   };
 
-  const textColor = mode === 'light' ? 'black' : 'white';
-  const selectColor = mode === 'light' ? '#F4F7FD' : '#20212C';
-  const border = mode === 'light' ? null : 1;
-  const borderColor = mode === 'light' ? '#F4F7FD' : '#828FA3';
-
   const submitTaskHHandler = async (e) => {
     e.preventDefault();
     const data = {
@@ -96,19 +91,17 @@ export function AddTaskForm(props) {
           mode === 'light' ? 'bg-White' : 'bg-VeryDarkGrey'
         } p-10 space-y-8 text-MediumGrey w-full`}
       >
-        <Typography variant='body1' sx={{ color: textColor, fontWeight: 900 }}>
-          Add New Task
-        </Typography>
+        <Typography variant='body1'>Add New Task</Typography>
 
         <form onSubmit={submitTaskHHandler} className='space-y-5'>
           <FormControl fullWidth className='space-y-3'>
             <Typography variant='body2'>Title</Typography>
             <TextField
               variant='outlined'
-              sx={{
-                border: border,
-                borderColor: borderColor,
-              }}
+              // sx={{
+              //   border: border,
+              //   borderColor: borderColor,
+              // }}
               id='title'
               name='title'
               placeholder='e.g. Take coffee break'
@@ -129,11 +122,11 @@ export function AddTaskForm(props) {
               hiddenLabel
               multiline
               rows={5}
-              sx={{
-                color: textColor,
-                border: border,
-                borderColor: borderColor,
-              }}
+              // sx={{
+              //   color: textColor,
+              //   border: border,
+              //   borderColor: borderColor,
+              // }}
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
               //   onBlur={handleBlur}
@@ -151,11 +144,11 @@ export function AddTaskForm(props) {
                   placeholder='e.g. Make coffee'
                   hiddenLabel
                   fullWidth
-                  sx={{
-                    color: textColor,
-                    border: border,
-                    borderColor: borderColor,
-                  }}
+                  // sx={{
+                  //   color: textColor,
+                  //   border: border,
+                  //   borderColor: borderColor,
+                  // }}
                   value={value}
                   onChange={(e) => handleInputChange(e, index)}
                   //   onBlur={handleBlur}
@@ -190,11 +183,11 @@ export function AddTaskForm(props) {
               <Select
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
-                sx={{
-                  color: textColor,
-                  border: border,
-                  borderColor: borderColor,
-                }}
+                // sx={{
+                //   color: textColor,
+                //   border: border,
+                //   borderColor: borderColor,
+                // }}
                 displayEmpty
                 inputProps={{
                   'aria-label': 'Without label',
@@ -202,7 +195,7 @@ export function AddTaskForm(props) {
                 MenuProps={{
                   PaperProps: {
                     sx: {
-                      bgcolor: selectColor,
+                      // bgcolor: selectColor,
 
                       '& .MuiMenuItem-root': {
                         //   padding: 2,
@@ -215,7 +208,7 @@ export function AddTaskForm(props) {
                   <MenuItem
                     key={item?._id}
                     value={item}
-                    sx={{ color: textColor }}
+                    // sx={{ color: textColor }}
                   >
                     {item?.name}
                   </MenuItem>

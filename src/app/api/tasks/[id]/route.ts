@@ -31,3 +31,17 @@ export const POST = async (request: any) => {
     return new NextResponse('Database Error', { status: 500 });
   }
 };
+
+export const DELETE = async (request: any, { params }: Params) => {
+  const { id } = params;
+
+  try {
+    await connect();
+    await Tasks.findByIdAndDelete(id);
+
+    return new NextResponse('Task deleted', { status: 200 });
+  } catch (err) {
+    console.log(err);
+    return new NextResponse('Database Error', { status: 500 });
+  }
+};

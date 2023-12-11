@@ -6,6 +6,7 @@ import {
   TextField,
   IconButton,
   CircularProgress,
+  Input,
 } from '@mui/material';
 import { ThemeContext } from '@/hooks/ThemeContext';
 import CloseIcon from '@mui/icons-material/Close';
@@ -22,6 +23,7 @@ export const AddColumnForm = (props: SimpleDialogProps) => {
   const { onClose, open, setOpen } = props;
   const { mode } = React.useContext(ThemeContext);
   const [loading, setLoading] = useState(false);
+  const [color, setColor] = useState('');
   const [inputValues, setInputValues] = useState<string[]>(['']);
   const { mutate } = useSWRConfig();
   const params = useParams();
@@ -49,30 +51,14 @@ export const AddColumnForm = (props: SimpleDialogProps) => {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const colors = [
-    '#635FC7',
-    '#FF9898',
-    '#EA5555',
-    '#625fc73c',
-    '#A8A4FF',
-    '#4842efd2',
-    '#e9ef42d2',
-    '#f1f58fd2',
-    '#f58fd3d2',
-    '#8fe4f5d2',
-    '#2cceefd2',
-    '#ef2c60d2',
-  ];
+  console.log(color);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const randomColorIndex = Math.floor(Math.random() * colors.length);
-    const randomColor = colors[randomColorIndex];
 
     const data = {
       columns: inputValues.map((value) => {
-        return { name: value, color: randomColor };
+        return { name: value, color };
       }),
     };
 
@@ -83,7 +69,7 @@ export const AddColumnForm = (props: SimpleDialogProps) => {
         method: 'PUT',
         body: JSON.stringify(data),
       });
-      mutate('/api/boards');
+      window.location.reload();
 
       setLoading(false);
     } catch (err) {
@@ -150,7 +136,15 @@ export const AddColumnForm = (props: SimpleDialogProps) => {
             </button>
           </FormControl>
 
-          <input type='color' />
+          <FormControl fullWidth>
+            <Typography>Choose Color</Typography>
+            <input
+              type='color'
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              className='w-full h-16'
+            />
+          </FormControl>
 
           <button
             type='submit'
