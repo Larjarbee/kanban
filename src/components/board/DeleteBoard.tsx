@@ -10,6 +10,8 @@ import {
 } from '@mui/material';
 import { ThemeContext } from '@/hooks/ThemeContext';
 import CloseIcon from '@mui/icons-material/Close';
+import { useParams } from 'next/navigation';
+import { useSWRConfig } from 'swr';
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -20,15 +22,23 @@ export interface SimpleDialogProps {
 export function DeleteBoard(props: SimpleDialogProps) {
   const { onClose, open, setOpen } = props;
   const { mode } = React.useContext(ThemeContext);
+  const params = useParams();
+  const { mutate } = useSWRConfig();
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const textColor = mode === 'light' ? 'black' : 'white';
-  const selectColor = mode === 'light' ? '#F4F7FD' : '#20212C';
-  const border = mode === 'light' ? null : 1;
-  const borderColor = mode === 'light' ? '#F4F7FD' : '#828FA3';
+  const deleteBoardHandler = async () => {
+    try {
+      await fetch(`/api/boards/${params.id}`, {
+        method: 'DELETE',
+      }),
+        mutate('/api/boards');
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <Dialog onClose={handleClose} open={open}>
@@ -47,7 +57,10 @@ export function DeleteBoard(props: SimpleDialogProps) {
         </Typography>
 
         <div className='flex gap-5'>
-          <button className='px-4 w-full py-3 bg-Red text-White rounded-full hover:opacity-60'>
+          <button
+            onClick={deleteBoardHandler}
+            className='px-4 w-full py-3 bg-Red text-White rounded-full hover:opacity-60'
+          >
             Delete
           </button>
           <button className='px-4 w-full py-3 bg-PurpleLighter text-Purple rounded-full hover:opacity-60'>

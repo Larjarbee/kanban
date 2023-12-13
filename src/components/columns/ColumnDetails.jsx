@@ -144,9 +144,10 @@ export function ColumnDetails(props) {
                   mode === 'light' ? 'bg-LighterGrey' : 'bg-Black'
                 } hover:bg-PurpleLighter`}
               >
-                <IconButton onClick={handleCheckBoxChange(subtask?._id)}>
-                  <Checkbox checked={subtask?.isCompleted} />
-                </IconButton>
+                <Checkbox
+                  checked={subtask?.isCompleted}
+                  onChange={handleCheckBoxChange(subtask?._id)}
+                />
 
                 <Typography
                   variant='body2'
