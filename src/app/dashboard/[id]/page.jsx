@@ -16,6 +16,7 @@ export default function ColumnList({ params }) {
   const [columnId, setColumnId] = useState('');
   const { id } = params;
   const { data, isLoading } = useSWR(`/api/boards/${id}`, fetcher);
+  const { data: columnData } = useSWR(`/api/columns/${id}`, fetcher);
   const { data: tasks } = useSWR('/api/tasks', fetcher);
 
   const handleClose = () => {
@@ -85,6 +86,59 @@ export default function ColumnList({ params }) {
             </div>
           ))}
 
+          {columnData?.map((column) => (
+            <div key={column?._id} className='space-y-5 w-[25%]'>
+              <div className='flex gap-3 items-center'>
+                <div
+                  style={{ backgroundColor: column?.color }}
+                  className='h-2 w-2 rounded-full'
+                />
+                <Typography
+                  variant='body2'
+                  sx={{ color: '#828FA3' }}
+                  className=' tracking-widest uppercase'
+                >
+                  {column?.name} (
+                  {tasks?.filter(
+                    (filteredTask) => filteredTask?.columnId === column?._id
+                  )?.length || 0}
+                  )
+                </Typography>
+              </div>
+
+              <div className=' space-y-5'>
+                {tasks
+                  ?.filter(
+                    (filteredTask) => filteredTask?.columnId === column?._id
+                  )
+                  ?.map((task) => (
+                    <div
+                      key={task?._id}
+                      className={`${
+                        mode === 'light' ? 'bg-White' : 'bg-DarkGrey text-White'
+                      } shadow-md p-5 rounded-xl space-y-2 hover:bg-[#625fc70c] hover:cursor-pointer`}
+                    >
+                      <Typography
+                        onClick={() => {
+                          setOpen(true);
+                          setColumnId(task?._id);
+                        }}
+                        variant='body2'
+                        className='hover:underline'
+                      >
+                        {task?.title}
+                      </Typography>
+
+                      <Typography variant='body2' sx={{ color: '#828FA3' }}>
+                        {countCompletedSubtasks(task?.subtasks)} of{' '}
+                        {task?.subtasks?.length} substasks
+                      </Typography>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          ))}
+
           <div
             className={`${
               mode === 'light' ? 'bg-LightGrey' : 'bg-VeryLightGrey'
@@ -102,7 +156,7 @@ export default function ColumnList({ params }) {
         </div>
       )}
       <ColumnDetails
-        opens={open}
+        open={open}
         columnId={columnId}
         onClose={handleClose}
         setOpen={setOpen}

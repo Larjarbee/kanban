@@ -4,12 +4,9 @@ const { Schema } = mongoose;
 
 const columnSchema = new Schema(
   {
-    columns: [
-      {
-        name: String,
-        color: String,
-      },
-    ],
+    boardId: String,
+    name: String,
+    color: String,
   },
   { timestamps: true }
 );

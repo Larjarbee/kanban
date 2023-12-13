@@ -15,7 +15,7 @@ import Link from 'next/link';
 
 export default function Navbar() {
   const { mode, toggleNav } = useContext(ThemeContext);
-  const { open, anchorEl, handleClick, handleCloses } = useMenu();
+  const { openDialog, anchorEl, handleClick, handleCloses } = useMenu();
   const [opens, setOpens] = useState(false);
   const [openEditBoard, setOpenEditBoard] = useState(false);
   const [openDeleteBoard, setOpenDeleteBoard] = useState(false);
@@ -101,8 +101,8 @@ export default function Navbar() {
               <IconButton
                 aria-label='more'
                 id='long-button'
-                aria-controls={open ? 'long-menu' : undefined}
-                aria-expanded={open ? 'true' : undefined}
+                aria-controls={openDialog ? 'long-menu' : undefined}
+                aria-expanded={openDialog ? 'true' : undefined}
                 aria-haspopup='true'
                 onClick={handleClick}
               >
@@ -115,7 +115,7 @@ export default function Navbar() {
                   'aria-labelledby': 'long-button',
                 }}
                 anchorEl={anchorEl}
-                open={open}
+                open={openDialog}
                 onClose={handleCloses}
                 PaperProps={{
                   style: {

@@ -12,6 +12,7 @@ import { ThemeContext } from '@/hooks/ThemeContext';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSWRConfig } from 'swr';
 import { useParams } from 'next/navigation';
+import { enqueueSnackbar } from 'notistack';
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -24,29 +25,10 @@ export const AddColumnForm = (props: SimpleDialogProps) => {
   const { mode } = React.useContext(ThemeContext);
   const [loading, setLoading] = useState(false);
   const [color, setColor] = useState('');
-  const [inputValues, setInputValues] = useState<string[]>(['']);
+  const [column, setColumn] = useState('');
   const { mutate } = useSWRConfig();
   const params = useParams();
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const newInputValues = [...inputValues];
-    newInputValues[index] = e.target.value;
-    setInputValues(newInputValues);
-  };
-
-  const handleAddInput = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    const newInputValues = [...inputValues, ''];
-    setInputValues(newInputValues);
-  };
-
-  const handleRemoveInput = (index: number) => {
-    const newInputValues = inputValues.filter((_, i) => i !== index);
-    setInputValues(newInputValues);
-  };
+  // const { enqueueSnackbar } = useSnackbar();
 
   const handleClose = () => {
     setOpen(false);
@@ -56,20 +38,24 @@ export const AddColumnForm = (props: SimpleDialogProps) => {
     e.preventDefault();
 
     const data = {
-      columns: inputValues.map((value) => {
-        return { name: value, color };
-      }),
+      boardId: params.id,
+      name: column,
+      color,
     };
 
     try {
       setLoading(true);
 
-      await fetch(`/api/boards/${params.id}`, {
-        method: 'PUT',
+      await fetch('/api/columns', {
+        method: 'POST',
         body: JSON.stringify(data),
       });
-      window.location.reload();
-
+      mutate(`/api/columns/${params.id}`);
+      enqueueSnackbar('Column added successful', {
+        variant: 'success',
+      });
+      setColor('');
+      setColumn('');
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -94,45 +80,26 @@ export const AddColumnForm = (props: SimpleDialogProps) => {
 
         <form onSubmit={handleSubmit} className='space-y-5'>
           <FormControl fullWidth className='space-y-3'>
-            <Typography variant='body2'>Columns</Typography>
-            {inputValues.map((value, index) => (
-              <div key={index} className='flex items-center gap-3'>
-                <TextField
-                  id='column'
-                  name='column'
-                  placeholder='e.g. Make coffee'
-                  hiddenLabel
-                  fullWidth
-                  sx={{
-                    color: textColor,
-                    border: border,
-                    borderColor: borderColor,
-                  }}
-                  value={value}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange(e, index)
-                  }
-                  //   onBlur={handleBlur}
-                  //   error={errors.first_name && touched.first_name}
-                />
-                <div>
-                  <IconButton
-                    sx={{ color: '#828FA3' }}
-                    onClick={() => handleRemoveInput(index)}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </div>
-              </div>
-            ))}
+            <Typography variant='body2'>Column</Typography>
 
-            <button
-              type='button'
-              onClick={handleAddInput}
-              className='px-4 w-full py-3 bg-PurpleLighter text-Purple rounded-full hover:opacity-60'
-            >
-              + Add New Column
-            </button>
+            <TextField
+              id='column'
+              name='column'
+              placeholder='e.g. Make coffee'
+              hiddenLabel
+              fullWidth
+              sx={{
+                color: textColor,
+                border: border,
+                borderColor: borderColor,
+              }}
+              value={column}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setColumn(e.target.value)
+              }
+              //   onBlur={handleBlur}
+              //   error={errors.first_name && touched.first_name}
+            />
           </FormControl>
 
           <FormControl fullWidth>

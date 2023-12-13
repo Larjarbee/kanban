@@ -30,6 +30,7 @@ export function AddTaskForm(props) {
   const { enqueueSnackbar } = useSnackbar();
 
   const { data } = useSWR(`/api/boards/${params.id}`, fetcher);
+  const { data: columnsData } = useSWR(`/api/columns/${params.id}`, fetcher);
 
   const handleInputChange = (e, index) => {
     const newInputValues = [...inputValues];
@@ -217,6 +218,15 @@ export function AddTaskForm(props) {
                     {item?.name}
                   </MenuItem>
                 ))}
+                {columnsData?.map((item) => (
+                  <MenuItem
+                    key={item?._id}
+                    value={item}
+                    // sx={{ color: textColor }}
+                  >
+                    {item?.name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </div>
@@ -235,18 +245,3 @@ export function AddTaskForm(props) {
     </Dialog>
   );
 }
-
-export const substasks = [
-  {
-    task: 'Research competitor pricing and business models',
-    completed: true,
-  },
-  {
-    task: 'Outline a business model that works for our solution',
-    completed: true,
-  },
-  {
-    task: 'Talk to potential customers about our proposed solution and ask for fair price expectancy',
-    completed: false,
-  },
-];

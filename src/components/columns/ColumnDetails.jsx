@@ -6,6 +6,8 @@ import {
   Checkbox,
   MenuItem,
   Menu,
+  FormControl,
+  Select,
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { ThemeContext } from '@/hooks/ThemeContext';
@@ -15,14 +17,19 @@ import { DeleteTask } from '../task/DeleteTask';
 import useSWR from 'swr';
 import { fetcher } from '@/common/fetcher';
 import { countCompletedSubtasks } from '@/common/subtaskCount';
+import { useParams } from 'next/navigation';
 
 export function ColumnDetails(props) {
+  const params = useParams();
   const { data } = useSWR('/api/tasks', fetcher);
-  const { onClose, opens, setOpen, columnId } = props;
+  const { data: columnsData } = useSWR(`/api/columns/${params.id}`, fetcher);
+  const { data: boardData } = useSWR(`/api/boards/${params.id}`, fetcher);
+  const { onClose, open, setOpen, columnId } = props;
   const { mode } = useContext(ThemeContext);
   const { openDialog, anchorEl, handleClick, handleCloses } = useMenu();
   const [openEditTask, setOpenEditTask] = useState(false);
   const [openDeleteTask, setOpenDeleteTask] = useState(false);
+  const [status, setStatus] = useState({});
 
   const task = data?.find((el) => el?._id === columnId);
 
@@ -61,11 +68,10 @@ export function ColumnDetails(props) {
   };
 
   const textColor = mode === 'light' ? 'text-Black' : 'text-White';
-  const typoTextColor = mode === 'light' ? 'black' : 'white';
   const selectColor = mode === 'light' ? '#F4F7FD' : '#20212C';
 
   return (
-    <Dialog onClose={handleClose} open={opens}>
+    <Dialog onClose={handleClose} open={open}>
       <div className='p-10 space-y-8'>
         <div className='flex justify-between'>
           <Typography variant='body1'>{task?.title}</Typography>
@@ -138,9 +144,10 @@ export function ColumnDetails(props) {
                   mode === 'light' ? 'bg-LighterGrey' : 'bg-Black'
                 } hover:bg-PurpleLighter`}
               >
-                <div onClick={handleCheckBoxChange(subtask?._id)}>
+                <IconButton onClick={handleCheckBoxChange(subtask?._id)}>
                   <Checkbox checked={subtask?.isCompleted} />
-                </div>
+                </IconButton>
+
                 <Typography
                   variant='body2'
                   className={`${
@@ -159,9 +166,58 @@ export function ColumnDetails(props) {
             Current Status
           </Typography>
 
-          <div className={`${textColor} w-full py-3 border text-center`}>
+          <FormControl fullWidth>
+            <Select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              // sx={{
+              //   color: textColor,
+              //   border: border,
+              //   borderColor: borderColor,
+              // }}
+              displayEmpty
+              inputProps={{
+                'aria-label': 'Without label',
+              }}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    // bgcolor: selectColor,
+
+                    '& .MuiMenuItem-root': {
+                      //   padding: 2,
+                    },
+                  },
+                },
+              }}
+            >
+              <MenuItem disabled value=''>
+                {task?.status}
+              </MenuItem>
+              {boardData?.columns?.map((item) => (
+                <MenuItem
+                  key={item?._id}
+                  value={item}
+                  // sx={{ color: textColor }}
+                >
+                  {item?.name}
+                </MenuItem>
+              ))}
+              {columnsData?.map((item) => (
+                <MenuItem
+                  key={item?._id}
+                  value={item}
+                  // sx={{ color: textColor }}
+                >
+                  {item?.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* <div className={`${textColor} w-full py-3 border text-center`}>
             <Typography>{task?.status}</Typography>
-          </div>
+          </div> */}
         </div>
       </div>
     </Dialog>
