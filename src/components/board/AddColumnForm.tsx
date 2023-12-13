@@ -51,7 +51,6 @@ export const AddColumnForm = (props: SimpleDialogProps) => {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log(color);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

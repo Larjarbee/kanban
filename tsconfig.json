@@ -29,7 +29,9 @@
     ".next/types/**/*.ts",
     "src/common/fetcher.js",
     "src/components/task/AddTaskForm.jsx",
-    "src/app/dashboard/[id]/page.jsx"
+    "src/app/dashboard/[id]/page.jsx",
+    "src/components/columns/ColumnDetails.jsx",
+    "src/common/ContainerWrapper.jsx"
   ],
   "exclude": ["node_modules"]
 }

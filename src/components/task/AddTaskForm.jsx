@@ -15,6 +15,7 @@ import { useSWRConfig } from 'swr';
 import { fetcher } from '@/common/fetcher';
 import useSWR from 'swr';
 import { useParams } from 'next/navigation';
+import { useSnackbar } from 'notistack';
 
 export function AddTaskForm(props) {
   const { onClose, open, setOpen } = props;
@@ -26,6 +27,7 @@ export function AddTaskForm(props) {
   const [desc, setDesc] = useState('');
   const [status, setStatus] = useState({});
   const params = useParams();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { data } = useSWR(`/api/boards/${params.id}`, fetcher);
 
@@ -73,7 +75,9 @@ export function AddTaskForm(props) {
         throw new Error('Failed to update topic');
       }
       mutate('/api/tasks');
-
+      enqueueSnackbar('Task added successful', {
+        variant: 'success',
+      });
       setLoading(false);
       setInputValues(['']);
       setTitle('');

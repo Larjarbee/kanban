@@ -16,28 +16,21 @@ import useSWR from 'swr';
 import { fetcher } from '@/common/fetcher';
 import { countCompletedSubtasks } from '@/common/subtaskCount';
 
-export interface SimpleDialogProps {
-  opens: boolean;
-  setOpen: (value: boolean) => void;
-  onClose: (value: string) => void;
-  columnId: string;
-}
-
-export function ColumnDetails(props: SimpleDialogProps) {
+export function ColumnDetails(props) {
   const { data } = useSWR('/api/tasks', fetcher);
   const { onClose, opens, setOpen, columnId } = props;
   const { mode } = useContext(ThemeContext);
-  const { open, anchorEl, handleClick, handleCloses } = useMenu();
+  const { openDialog, anchorEl, handleClick, handleCloses } = useMenu();
   const [openEditTask, setOpenEditTask] = useState(false);
   const [openDeleteTask, setOpenDeleteTask] = useState(false);
 
-  const task = data?.find((el: any) => el?._id === columnId);
+  const task = data?.find((el) => el?._id === columnId);
 
   const handleClickOpenEditTask = () => {
     setOpenEditTask(true);
   };
 
-  const handleCloseEditTask = (value: string) => {
+  const handleCloseEditTask = (value) => {
     setOpenEditTask(false);
   };
 
@@ -45,12 +38,26 @@ export function ColumnDetails(props: SimpleDialogProps) {
     setOpenDeleteTask(true);
   };
 
-  const handleCloseDeleteTask = (value: string) => {
+  const handleCloseDeleteTask = (value) => {
     setOpenDeleteTask(false);
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleCheckBoxChange = async (id) => {
+    try {
+      await fetch(`/api/tasks/${id}`),
+        {
+          method: 'PATCH',
+          body: {
+            subtasks: { isCompleted: true },
+          },
+        };
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const textColor = mode === 'light' ? 'text-Black' : 'text-White';
@@ -81,7 +88,7 @@ export function ColumnDetails(props: SimpleDialogProps) {
                 'aria-labelledby': 'long-button',
               }}
               anchorEl={anchorEl}
-              open={open}
+              open={openDialog}
               onClose={handleCloses}
               PaperProps={{
                 style: {
@@ -124,14 +131,16 @@ export function ColumnDetails(props: SimpleDialogProps) {
             {task?.subtasks?.length}
           </Typography>
           <div className='space-y-2'>
-            {task?.subtasks.map((subtask: any) => (
+            {task?.subtasks.map((subtask) => (
               <div
                 key={subtask?._id}
                 className={`flex items-center gap-2 p-1 rounded-lg ${
                   mode === 'light' ? 'bg-LighterGrey' : 'bg-Black'
                 } hover:bg-PurpleLighter`}
               >
-                <Checkbox checked={subtask?.isCompleted} />
+                <div onClick={handleCheckBoxChange(subtask?._id)}>
+                  <Checkbox checked={subtask?.isCompleted} />
+                </div>
                 <Typography
                   variant='body2'
                   className={`${
@@ -158,18 +167,3 @@ export function ColumnDetails(props: SimpleDialogProps) {
     </Dialog>
   );
 }
-
-export const substasks = [
-  {
-    task: 'Research competitor pricing and business models',
-    completed: true,
-  },
-  {
-    task: 'Outline a business model that works for our solution',
-    completed: true,
-  },
-  {
-    task: 'Talk to potential customers about our proposed solution and ask for fair price expectancy',
-    completed: false,
-  },
-];

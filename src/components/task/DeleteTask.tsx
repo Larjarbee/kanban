@@ -3,6 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import { Typography } from '@mui/material';
 import { ThemeContext } from '@/hooks/ThemeContext';
 import { useSWRConfig } from 'swr';
+import { useSnackbar } from 'notistack';
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -16,6 +17,7 @@ export function DeleteTask(props: SimpleDialogProps) {
   const { onClose, open, setOpen, setOpens, task } = props;
   const { mode } = React.useContext(ThemeContext);
   const { mutate } = useSWRConfig();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleClose = () => {
     setOpen(false);
@@ -27,6 +29,9 @@ export function DeleteTask(props: SimpleDialogProps) {
         method: 'DELETE',
       });
       mutate('/api/tasks');
+      enqueueSnackbar('Task was deleted successful', {
+        variant: 'error',
+      });
       setOpen(false);
       setOpens(false);
     } catch (error) {

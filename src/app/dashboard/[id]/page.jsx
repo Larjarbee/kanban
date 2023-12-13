@@ -4,10 +4,10 @@ import React, { useContext, useState } from 'react';
 import { ThemeContext } from '@/hooks/ThemeContext';
 import useSWR from 'swr';
 import { fetcher } from '@/common/fetcher';
-import { ColumnDetails } from '@/components/columns/ColumnDetails';
 import Loading from '@/common/Loading';
 import { countCompletedSubtasks } from '@/common/subtaskCount';
 import { AddColumnForm } from '@/components/board/AddColumnForm';
+import { ColumnDetails } from '@/components/columns/ColumnDetails';
 
 export default function ColumnList({ params }) {
   const { mode } = useContext(ThemeContext);

@@ -4,9 +4,9 @@ import { Plus_Jakarta_Sans } from 'next/font/google';
 import Sidebar from '@/components/nav/Sidebar';
 import Navbar from '@/components/nav/Navbar';
 import { ThemeProvider } from '@/hooks/ThemeContext';
-import ContainerWrapper from '@/common/ContainerWrapper';
 import './globals.css';
 import HomeWrapper from '@/common/HomeWrapper';
+import ContainerWrapper from '@/common/ContainerWrapper';
 
 const jakarta = Plus_Jakarta_Sans({
   weight: ['200', '300', '400', '500', '600', '700', '800'],

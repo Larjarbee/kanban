@@ -32,6 +32,24 @@ export const POST = async (request: any) => {
   }
 };
 
+export const PATCH = async (request: any, { params }: Params) => {
+  const body = await request.json();
+  const { id } = params;
+
+  try {
+    await connect();
+
+    const updatedTask = await Tasks.findByIdAndUpdate(id, body, {
+      new: true,
+      runValidators: true,
+    });
+
+    return new NextResponse(JSON.stringify(updatedTask), { status: 201 });
+  } catch (err) {
+    return new NextResponse('Database Error', { status: 500 });
+  }
+};
+
 export const DELETE = async (request: any, { params }: Params) => {
   const { id } = params;
 
