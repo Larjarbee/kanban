@@ -11,7 +11,7 @@ import ContainerWrapper from '@/common/ContainerWrapper';
 const jakarta = Plus_Jakarta_Sans({
   weight: ['200', '300', '400', '500', '600', '700', '800'],
   subsets: ['latin'],
-  preload: false,
+  // preload: false,
 });
 
 export const metadata = {
@@ -33,7 +33,7 @@ export default function RootLayout({
               <Sidebar />
               <HomeWrapper>
                 <Navbar />
-                <main className='w-full overflow-auto'>{children}</main>
+                <main>{children}</main>
               </HomeWrapper>
             </ContainerWrapper>
           </ThemeProvider>

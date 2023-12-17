@@ -28,11 +28,11 @@ export default function ColumnList({ params }) {
   };
 
   return (
-    <>
+    <div className='w-full overflow-auto'>
       {isLoading ? (
         <Loading />
       ) : (
-        <div className='h-screen flex p-5 gap-5'>
+        <div className=' flex p-5 gap-5'>
           {data?.columns?.map((column) => (
             <div key={column?._id} className='space-y-5 w-[25%]'>
               <div className='flex gap-3 items-center'>
@@ -82,6 +82,12 @@ export default function ColumnList({ params }) {
                       </Typography>
                     </div>
                   ))}
+                <ColumnDetails
+                  open={open}
+                  columnId={columnId}
+                  onClose={handleClose}
+                  setOpen={setOpen}
+                />
               </div>
             </div>
           ))}
@@ -142,30 +148,27 @@ export default function ColumnList({ params }) {
           <div
             className={`${
               mode === 'light' ? 'bg-LightGrey' : 'bg-VeryLightGrey'
-            } text-MediumGrey px-10 flex flex-col items-center justify-between rounded-lg`}
+            } text-MediumGrey px-10 flex flex-col h-screen items-center justify-between rounded-lg`}
           >
             <div className='flex-1' />
-            <button
-              onClick={() => setOpens(true)}
-              className='px-3 py-1 bg-inherit rounded-xl hover:bg-PurpleLighter'
-            >
-              +New Column
-            </button>
+            <div>
+              <button
+                onClick={() => setOpens(true)}
+                className='px-3 py-1 bg-inherit rounded-xl hover:bg-PurpleLighter'
+              >
+                +New Column
+              </button>
+              <AddColumnForm
+                open={opens}
+                onClose={handleColumnClose}
+                setOpen={setOpens}
+              />
+            </div>
+
             <div className='flex-1' />
           </div>
         </div>
       )}
-      <ColumnDetails
-        open={open}
-        columnId={columnId}
-        onClose={handleClose}
-        setOpen={setOpen}
-      />
-      <AddColumnForm
-        open={opens}
-        onClose={handleColumnClose}
-        setOpen={setOpens}
-      />
-    </>
+    </div>
   );
 }
