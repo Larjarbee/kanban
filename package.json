@@ -6,20 +6,38 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "serve-json": "json-server --watch kanban.json --port 4000"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.0.4",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-popover": "^1.0.7",
+    "@radix-ui/react-select": "^2.0.0",
+    "@radix-ui/react-slot": "^1.0.2",
+    "axios": "^1.6.7",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "json-server": "^1.0.0-alpha.23",
+    "lucide-react": "^0.316.0",
+    "mongoose": "^8.1.1",
+    "next": "14.1.0",
+    "next-themes": "^0.2.1",
+    "notistack": "^3.0.1",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.1.0"
+    "react-query": "^3.39.3",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
-    "tailwindcss": "^3.3.0"
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
   }
 }
