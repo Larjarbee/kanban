@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-const TaskFormSelect = async ({ paramsId }: any) => {
+const TaskFormSelect = ({ paramsId }: any) => {
   return (
     <div>
       <Select>

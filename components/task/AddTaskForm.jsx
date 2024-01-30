@@ -35,41 +35,41 @@ export function AddTaskForm(props) {
     setInputValues(newInputValues);
   };
 
-  const submitTaskHHandler = async (e) => {
-    e.preventDefault();
-    const data = {
-      boardId: params.id,
-      columnId: status._id,
-      status: status.name,
-      title,
-      description: desc,
-      subtasks: inputValues.map((value) => {
-        return { title: value, isCompleted: false };
-      }),
-    };
-    try {
-      setLoading(true);
+  // const submitTaskHHandler = async (e) => {
+  //   e.preventDefault();
+  //   const data = {
+  //     boardId: params.id,
+  //     columnId: status._id,
+  //     status: status.name,
+  //     title,
+  //     description: desc,
+  //     subtasks: inputValues.map((value) => {
+  //       return { title: value, isCompleted: false };
+  //     }),
+  //   };
+  //   try {
+  //     setLoading(true);
 
-      const res = await fetch('/api/tasks', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
-      if (!res.ok) {
-        throw new Error('Failed to update topic');
-      }
-      mutate('/api/tasks');
-      enqueueSnackbar('Task added successful', {
-        variant: 'success',
-      });
-      setLoading(false);
-      setInputValues(['']);
-      setTitle('');
-      setDesc('');
-      setStatus({});
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //     const res = await fetch('/api/tasks', {
+  //       method: 'POST',
+  //       body: JSON.stringify(data),
+  //     });
+  //     if (!res.ok) {
+  //       throw new Error('Failed to update topic');
+  //     }
+  //     mutate('/api/tasks');
+  //     enqueueSnackbar('Task added successful', {
+  //       variant: 'success',
+  //     });
+  //     setLoading(false);
+  //     setInputValues(['']);
+  //     setTitle('');
+  //     setDesc('');
+  //     setStatus({});
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <div className='space-y-8'>
@@ -77,7 +77,7 @@ export function AddTaskForm(props) {
         <h2>Add New Task</h2>
       </DialogHeader>
 
-      <form onSubmit={submitTaskHHandler} className='space-y-5'>
+      <form className='space-y-5'>
         <div className='space-y-1'>
           <Label htmlFor='title' className='text-right'>
             Title

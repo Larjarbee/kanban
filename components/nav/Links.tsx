@@ -17,7 +17,7 @@ const Links = ({ data }: any) => {
           className={cn(
             pathname === `/boards/${link?.id}`
               ? 'flex items-center pl-14 py-3 gap-3 text-white rounded-r-full bg-[#635FC7]'
-              : 'flex items-center pl-14 gap-3 py-3 hover:bg-[hsl(243,100%,95%)] hover:text-Purple hover:rounded-r-full hover:transition-all'
+              : 'flex items-center pl-14 gap-3 py-3 hover:bg-[hsl(243,100%,95%)] hover:text-Purple hover:rounded-r-full dark:hover:text-primary dark:hover:bg-[hsl(243,100%,95%)] hover:transition-all'
           )}
           href={`/boards/${link.id}`}
         >

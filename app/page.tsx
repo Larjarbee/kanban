@@ -5,7 +5,7 @@ import { getBoards } from '@/lib/api/board';
 export default function Home() {
   const { data } = getBoards();
   return (
-    <div className='p-5 h-screen bg-[#f2f5fd]'>
+    <div className='p-5 h-screen bg-[#f2f5fd] dark:bg-[hsl(235,16%,15%)]'>
       {data?.data.length == 0 ? (
         <div>
           <div className='my-[25%] text-MediumGrey text-center space-y-5'>

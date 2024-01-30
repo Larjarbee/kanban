@@ -80,7 +80,7 @@ export function ColumnDetails({ task }) {
           {task?.subtasks.map((subtask) => (
             <div
               key={subtask?._id}
-              className='flex items-center bg-[#F4F7FD] gap-2 p-3 rounded-lg hover:bg-[hsl(242,48%,90%)]'
+              className='flex items-center bg-[#F4F7FD] gap-2 p-3 rounded-lg hover:bg-[hsl(242,48%,90%)] dark:bg-[#20212C]'
             >
               <Checkbox
                 checked={subtask?.isCompleted}

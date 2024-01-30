@@ -9,20 +9,19 @@ import box2 from '@/public/svgs/fluent_board-split-24-regular (3).svg';
 import Link from 'next/link';
 import { AddBoardForm } from '../board/AddBoardForm';
 import { Button } from '../ui/button';
-import { Eye, ToggleLeft } from 'lucide-react';
+import { Eye, Moon, Sun, ToggleLeft } from 'lucide-react';
 import { getBoards } from '@/lib/api/board';
 import Links from './Links';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ToggleContext } from '@/hooks/ToggleContext';
-
-// import { useTheme } from 'next-themes';
+import { useTheme } from 'next-themes';
 
 export default function Sidebar() {
   const { toggleNav, handleToggle } = useContext(ToggleContext);
 
-  // const { setTheme } = useTheme();
+  const { setTheme } = useTheme();
 
   const { data } = getBoards();
 
@@ -67,12 +66,18 @@ export default function Sidebar() {
 
           <div className='py-10 space-y-5'>
             <div className='p-3 mx-5 rounded-lg flex gap-5 justify-center items-center'>
-              <Image src={dark} width={16} height={16} alt='logo' />
-              <Button variant='ghost'>
-                <ToggleLeft />
+              {/* <Image src={dark} width={16} height={16} alt='logo' /> */}
+              <Button onClick={() => setTheme('dark')} variant='ghost'>
+                <Moon />
               </Button>
 
-              <Image src={light} width={16} height={16} alt='logo' />
+              <h4>mode</h4>
+
+              <Button onClick={() => setTheme('light')} variant='ghost'>
+                <Sun />
+              </Button>
+
+              {/* <Image src={light} width={16} height={16} alt='logo' /> */}
             </div>
 
             <div className='w-[80%]'>
