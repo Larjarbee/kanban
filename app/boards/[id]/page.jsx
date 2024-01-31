@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import Loading from '@/common/Loading';
 import { countCompletedSubtasks } from '@/common/subtaskCount';
 import { AddColumnForm } from '@/components/board/AddColumnForm';
@@ -51,13 +51,6 @@ export default function ColumnList({ params }) {
                   </h6>
                 </div>
               ))}
-
-              {/* <ColumnDetails
-                open={open}
-                columnId={columnId}
-                onClose={handleClose}
-                setOpen={setOpen}
-              /> */}
             </div>
           </div>
         ))}

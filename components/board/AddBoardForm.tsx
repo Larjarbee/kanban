@@ -1,5 +1,5 @@
 'use client';
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
@@ -43,20 +43,21 @@ export function AddBoardForm() {
         return { name: value, color: randomColor };
       }),
     };
+    console.log(data);
 
-    try {
-      setLoading(true);
+    // try {
+    //   setLoading(true);
 
-      await fetch('/api/boards', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
+    //   await fetch('/api/boards', {
+    //     method: 'POST',
+    //     body: JSON.stringify(data),
+    //   });
 
-      setLoading(false);
-      setName('');
-    } catch (err) {
-      console.log(err);
-    }
+    //   setLoading(false);
+    //   setName('');
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   return (
