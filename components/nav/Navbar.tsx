@@ -25,7 +25,7 @@ export default function Navbar() {
       {toggleNav && (
         <Link
           href='/'
-          className='flex w-[25%] gap-3 px-10 items-center justify-center border-b border-r'
+          className='flex w-[20%] gap-3 px-10 items-center justify-center border-b border-r'
         >
           <Image src={logo} width={24} height={25} alt='logo' />
 

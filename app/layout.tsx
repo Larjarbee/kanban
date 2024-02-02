@@ -31,8 +31,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div className='flex h-screen'>
+            <div className='flex'>
               <Sidebar />
+
               <div className='w-full'>
                 <Navbar />
                 {children}

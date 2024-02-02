@@ -28,7 +28,7 @@ export default function Sidebar() {
   return (
     <>
       {!toggleNav ? (
-        <aside className='w-[25%] border-r flex h-screen flex-col justify-between'>
+        <aside className='w-[20%] sticky z-20 left-0 top-0 border-r flex h-screen flex-col justify-between'>
           <div className='space-y-8'>
             <Link
               href='/'

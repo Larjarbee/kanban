@@ -102,58 +102,9 @@ export function ColumnDetails({ task }) {
       <div className='space-y-3'>
         <h4>Current Status</h4>
 
-        {/* <FormControl fullWidth>
-            <Select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              // sx={{
-              //   color: textColor,
-              //   border: border,
-              //   borderColor: borderColor,
-              // }}
-              displayEmpty
-              inputProps={{
-                'aria-label': 'Without label',
-              }}
-              MenuProps={{
-                PaperProps: {
-                  sx: {
-                    // bgcolor: selectColor,
-
-                    '& .MuiMenuItem-root': {
-                      //   padding: 2,
-                    },
-                  },
-                },
-              }}
-            >
-              <MenuItem disabled value=''>
-                {task?.status}
-              </MenuItem>
-              {boardData?.columns?.map((item) => (
-                <MenuItem
-                  key={item?._id}
-                  value={item}
-                  // sx={{ color: textColor }}
-                >
-                  {item?.name}
-                </MenuItem>
-              ))}
-              {columnsData?.map((item) => (
-                <MenuItem
-                  key={item?._id}
-                  value={item}
-                  // sx={{ color: textColor }}
-                >
-                  {item?.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl> */}
-
-        {/* <div className={`${textColor} w-full py-3 border text-center`}>
-            <Typography>{task?.status}</Typography>
-          </div> */}
+        <div className='text-center bg-[#F4F7FD] gap-2 p-3 rounded-lg hover:bg-[hsl(242,48%,90%)] dark:bg-[#20212C]'>
+          <h4>{task.status}</h4>
+        </div>
       </div>
     </div>
   );
