@@ -7,16 +7,25 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Loader2, X } from 'lucide-react';
 import { DialogFooter, DialogHeader } from '../ui/dialog';
-import TaskFormSelect from './TaskFormSelect';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { getBoardById } from '@/lib/api/board';
+import { useAddTaskMutation } from '@/lib/api/task';
 
 export function AddTaskForm(props) {
-  const [loading, setLoading] = useState(false);
   const [inputValues, setInputValues] = useState(['']);
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
-  const [status, setStatus] = useState({});
+  const [selectValue, setSelectValue] = useState('');
   const params = useParams();
   const { enqueueSnackbar } = useSnackbar();
+
+  const { data } = getBoardById(params.id);
 
   const handleInputChange = (e, index) => {
     const newInputValues = [...inputValues];
@@ -35,41 +44,31 @@ export function AddTaskForm(props) {
     setInputValues(newInputValues);
   };
 
-  // const submitTaskHHandler = async (e) => {
-  //   e.preventDefault();
-  //   const data = {
-  //     boardId: params.id,
-  //     columnId: status._id,
-  //     status: status.name,
-  //     title,
-  //     description: desc,
-  //     subtasks: inputValues.map((value) => {
-  //       return { title: value, isCompleted: false };
-  //     }),
-  //   };
-  //   try {
-  //     setLoading(true);
+  const { mutate: addTask, isLoading } = useAddTaskMutation();
 
-  //     const res = await fetch('/api/tasks', {
-  //       method: 'POST',
-  //       body: JSON.stringify(data),
-  //     });
-  //     if (!res.ok) {
-  //       throw new Error('Failed to update topic');
-  //     }
-  //     mutate('/api/tasks');
-  //     enqueueSnackbar('Task added successful', {
-  //       variant: 'success',
-  //     });
-  //     setLoading(false);
-  //     setInputValues(['']);
-  //     setTitle('');
-  //     setDesc('');
-  //     setStatus({});
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  const submitTaskHHandler = async (e) => {
+    e.preventDefault();
+    const data = {
+      status: selectValue,
+      title,
+      description: desc,
+      subtasks: inputValues.map((value) => {
+        return { title: value, isCompleted: false };
+      }),
+    };
+    try {
+      addTask(data);
+
+      // enqueueSnackbar('Task added successful', {
+      //   variant: 'success',
+      // });
+      setInputValues(['']);
+      setTitle('');
+      setDesc('');
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className='space-y-8'>
@@ -77,7 +76,7 @@ export function AddTaskForm(props) {
         <h2>Add New Task</h2>
       </DialogHeader>
 
-      <form className='space-y-5'>
+      <form className='space-y-5' onSubmit={submitTaskHHandler}>
         <div className='space-y-1'>
           <Label htmlFor='title' className='text-right'>
             Title
@@ -145,12 +144,23 @@ export function AddTaskForm(props) {
             Current Status
           </Label>
 
-          <TaskFormSelect paramsId={params.id} />
+          <Select onValueChange={(value) => setSelectValue(value)}>
+            <SelectTrigger className='w-full'>
+              <SelectValue placeholder='Select status' />
+            </SelectTrigger>
+            <SelectContent className=' h-2/3 overflow-auto'>
+              {data?.data.columns.map((column, index) => (
+                <SelectItem key={index} value={column.name}>
+                  {column.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <DialogFooter>
           <Button type='submit' className='w-full'>
-            {loading ? <Loader2 className=' animate-spin' /> : 'Create Task'}
+            {isLoading ? <Loader2 className=' animate-spin' /> : 'Create Task'}
           </Button>
         </DialogFooter>
       </form>
