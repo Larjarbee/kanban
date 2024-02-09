@@ -28,7 +28,7 @@ export default function Sidebar() {
   return (
     <>
       {!toggleNav ? (
-        <aside className='w-[20%] sticky z-20 left-0 top-0 border-r flex h-screen flex-col justify-between'>
+        <aside className='hidden w-[20%] sticky z-20 left-0 top-0 border-r h-screen flex-col justify-between md:flex'>
           <div className='space-y-8'>
             <Link
               href='/'
@@ -55,7 +55,7 @@ export default function Sidebar() {
                     <DialogTrigger asChild>
                       <Button>+ Create New Board</Button>
                     </DialogTrigger>
-                    <DialogContent className='sm:max-w-[425px]'>
+                    <DialogContent className='overflow-y-scroll max-h-full'>
                       <AddBoardForm />
                     </DialogContent>
                   </Dialog>

@@ -7,7 +7,7 @@ export const getBoards = () => {
   });
 };
 
-export const getBoardById = (id: string) => {
+export const getBoardById = (id: any) => {
   return useQuery('board', () => {
     return axios.get(`http://localhost:4000/boards/${id}`);
   });

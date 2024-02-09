@@ -2,7 +2,7 @@
 import React from 'react';
 import Loading from '@/common/Loading';
 import { countCompletedSubtasks } from '@/common/subtaskCount';
-import { AddColumnForm } from '@/components/board/AddColumnForm';
+// import { AddColumnForm } from '@/components/board/AddColumnForm';
 import { ColumnDetails } from '@/components/columns/ColumnDetails';
 import { Button } from '@/components/ui/button';
 import { getBoardById } from '@/lib/api/board';
@@ -19,7 +19,7 @@ export default function ColumnList({ params }) {
 
       <div className='overflow-auto flex p-5 gap-5'>
         {data?.data.columns?.map((column, i) => (
-          <div key={i} className='space-y-5 w-[25%]'>
+          <div key={i} className='space-y-5 min-w-72'>
             <div className='flex gap-3 items-center'>
               <div className='h-2 w-2 rounded-full bg-[#635FC7]' />
               <h2 className=' tracking-widest uppercase'>
@@ -40,7 +40,7 @@ export default function ColumnList({ params }) {
                         {task?.title}
                       </h2>
                     </DialogTrigger>
-                    <DialogContent className='sm:max-w-[500px]'>
+                    <DialogContent className='overflow-y-scroll max-h-full'>
                       <ColumnDetails task={task} />
                     </DialogContent>
                   </Dialog>

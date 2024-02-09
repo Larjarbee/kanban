@@ -12,7 +12,7 @@ export const useAddTaskMutation = () => {
       queryClient.setQueriesData('boards', (oldQueryData: any) => {
         return {
           ...oldQueryData,
-          data: [...oldQueryData.data, , data.data],
+          data: [...oldQueryData.data, data.data],
         };
       });
     },

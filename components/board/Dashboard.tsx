@@ -11,7 +11,7 @@ export default function Dashboard() {
   return (
     <>
       {isLoading && <Loading />}
-      <div className='grid grid-cols-4 gap-10'>
+      <div className='grid grid-cols-1 gap-10 md:grid-cols-4'>
         {data?.data.map((column: any) => (
           <div key={column?.id} className='flex items-center gap-5'>
             <h2>{column?.name}</h2>
