@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 
-const addTask = (task: any) => {
-  return axios.post('http://localhost:4000/boards', task);
+const addTask = ({ id, task }: any) => {
+  return axios.patch(`http://localhost:4000/boards/${id}`, task);
 };
 
 export const useAddTaskMutation = () => {

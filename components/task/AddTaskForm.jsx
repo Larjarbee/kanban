@@ -48,16 +48,24 @@ export function AddTaskForm(props) {
 
   const submitTaskHHandler = async (e) => {
     e.preventDefault();
-    const data = {
-      status: selectValue,
-      title,
-      description: desc,
-      subtasks: inputValues.map((value) => {
-        return { title: value, isCompleted: false };
-      }),
-    };
+
     try {
-      addTask(data);
+      addTask({
+        id: params.id,
+        columns: [
+          {
+            name: selectValue,
+            tasks: {
+              status: selectValue,
+              title,
+              description: desc,
+              subtasks: inputValues.map((value) => {
+                return { title: value, isCompleted: false };
+              }),
+            },
+          },
+        ],
+      });
 
       // enqueueSnackbar('Task added successful', {
       //   variant: 'success',
@@ -149,7 +157,7 @@ export function AddTaskForm(props) {
               <SelectValue placeholder='Select status' />
             </SelectTrigger>
             <SelectContent className=' h-2/3 overflow-auto'>
-              {data?.data.columns.map((column, index) => (
+              {data?.data?.columns?.map((column, index) => (
                 <SelectItem key={index} value={column.name}>
                   {column.name}
                 </SelectItem>

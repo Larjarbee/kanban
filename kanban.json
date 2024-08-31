@@ -433,6 +433,21 @@
       "id": "4",
       "name": "Cleanup",
       "columns": []
+    },
+
+    {
+      "id": "fe4b49b4-7e4b-471c-917b-ca796de0bc93",
+      "name": "natours",
+      "columns": [
+        {
+          "name": "Todo",
+          "color": "#e9ef42d2"
+        },
+        {
+          "name": "Review",
+          "color": "#e9ef42d2"
+        }
+      ]
     }
   ]
 }

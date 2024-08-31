@@ -6,10 +6,11 @@ import { Button } from '../ui/button';
 import { Loader2, X } from 'lucide-react';
 import { DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
 import { colors } from '@/common/colors';
+import { v4 as uuidv4 } from 'uuid';
+import { useAddBoardMutation } from '@/lib/api/board';
 
 export function AddBoardForm() {
   const [name, setName] = useState('');
-  const [loading, setLoading] = useState(false);
   const [inputValues, setInputValues] = useState<string[]>(['']);
 
   const handleInputChange = (
@@ -32,32 +33,28 @@ export function AddBoardForm() {
     setInputValues(newInputValues);
   };
 
+  const { mutate: addBoard, isLoading } = useAddBoardMutation();
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const randomColorIndex = Math.floor(Math.random() * colors.length);
     const randomColor = colors[randomColorIndex];
 
     const data = {
+      id: uuidv4(),
       name,
       columns: inputValues.map((value) => {
         return { name: value, color: randomColor };
       }),
     };
-    console.log(data);
 
-    // try {
-    //   setLoading(true);
-
-    //   await fetch('/api/boards', {
-    //     method: 'POST',
-    //     body: JSON.stringify(data),
-    //   });
-
-    //   setLoading(false);
-    //   setName('');
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    try {
+      addBoard(data);
+      setInputValues(['']);
+      setName('');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -75,7 +72,7 @@ export function AddBoardForm() {
             name='name'
             placeholder='e.g. Take coffee break'
             value={name}
-            //   onBlur={handleBlur}
+            // onBlur={handleBlur}
             onChange={(e) => setName(e.target.value)}
             //   error={errors.first_name && touched.first_name}
           />
@@ -122,7 +119,7 @@ export function AddBoardForm() {
 
         <DialogFooter>
           <Button className='w-full' type='submit'>
-            {loading ? (
+            {isLoading ? (
               <Loader2 className=' animate-spin' />
             ) : (
               'Create New Board'

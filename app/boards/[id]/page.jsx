@@ -24,12 +24,12 @@ export default function ColumnList({ params }) {
               <div className='h-2 w-2 rounded-full bg-[#635FC7]' />
               <h2 className=' tracking-widest uppercase'>
                 {column?.name} (
-                {column?.tasks.map((tasks) => tasks)?.length || 0})
+                {column?.tasks?.map((tasks) => tasks)?.length || 0})
               </h2>
             </div>
 
             <div className='space-y-5'>
-              {column?.tasks.map((task, index) => (
+              {column?.tasks?.map((task, index) => (
                 <div
                   key={index}
                   className='shadow-md p-5 bg-white rounded-xl space-y-2 hover:bg-white hover:cursor-pointer dark:bg-background'
